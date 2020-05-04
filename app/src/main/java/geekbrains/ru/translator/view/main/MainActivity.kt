@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
 import geekbrains.ru.translator.model.data.DataModel
 import geekbrains.ru.translator.model.data.SearchResult
@@ -15,11 +16,13 @@ import geekbrains.ru.translator.view.base.BaseActivity
 import geekbrains.ru.translator.view.base.View
 import geekbrains.ru.translator.view.main.adapter.ItemTouchHelperAdapter
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
+import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity<DataModel>() {
+class MainActivity : BaseActivity<DataModel>(),OnStartDragListener {
 
     private var adapter: MainAdapter? = null
+    private lateinit var itemTouchHelper: ItemTouchHelper
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: SearchResult) {
@@ -57,8 +60,9 @@ class MainActivity : BaseActivity<DataModel>() {
                         main_activity_recyclerview.layoutManager = LinearLayoutManager(applicationContext)
                         main_activity_recyclerview.adapter = MainAdapter(onListItemClickListener, searchResult)
                         MyItemTouchHelper(adapter).run {
-                            ItemTouchHelper(this)
-                        }.attachToRecyclerView(main_activity_recyclerview)
+                            itemTouchHelper=ItemTouchHelper(this)
+                        }
+                        itemTouchHelper.attachToRecyclerView(main_activity_recyclerview)
 
                     } else {
                         adapter!!.setData(searchResult)
@@ -110,5 +114,9 @@ class MainActivity : BaseActivity<DataModel>() {
 
     companion object {
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
+    }
+
+    override fun onStartDrag(viewHolder: RecyclerView.ViewHolder?) {
+        viewHolder?.let { itemTouchHelper.startDrag(it)}
     }
 }

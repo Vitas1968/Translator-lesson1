@@ -41,7 +41,6 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
             }
         }
 
-
 //        var itemData=data.removeAt(fromPosition)
 //        data.add(if (toPosition > fromPosition) toPosition - 1 else toPosition,itemData)
 
