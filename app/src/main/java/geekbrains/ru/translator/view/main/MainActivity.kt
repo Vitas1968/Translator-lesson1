@@ -57,12 +57,20 @@ class MainActivity : BaseActivity<DataModel>(),OnStartDragListener {
                 } else {
                     showViewSuccess()
                     if (adapter == null) {
+                        adapter= MainAdapter(onListItemClickListener, searchResult, this)
                         main_activity_recyclerview.layoutManager = LinearLayoutManager(applicationContext)
-                        main_activity_recyclerview.adapter = MainAdapter(onListItemClickListener, searchResult)
-                        MyItemTouchHelper(adapter).run {
-                            itemTouchHelper=ItemTouchHelper(this)
-                        }
-                        itemTouchHelper.attachToRecyclerView(main_activity_recyclerview)
+                       // main_activity_recyclerview.adapter =adapter
+                       // val callBack=MyItemTouchHelper(adapter)
+                        //itemTouchHelper=ItemTouchHelper(callBack)
+                       // itemTouchHelper.attachToRecyclerView(main_activity_recyclerview)
+                        itemTouchHelper= adapter
+                            .run{
+                            main_activity_recyclerview.adapter =this
+                            MyItemTouchHelper(this)}
+                            .run{
+                                ItemTouchHelper(this)}
+                            .apply {
+                                attachToRecyclerView(main_activity_recyclerview)}
 
                     } else {
                         adapter!!.setData(searchResult)
