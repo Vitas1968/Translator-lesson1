@@ -5,7 +5,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
@@ -14,7 +13,6 @@ import geekbrains.ru.translator.model.data.SearchResult
 import geekbrains.ru.translator.presenter.Presenter
 import geekbrains.ru.translator.view.base.BaseActivity
 import geekbrains.ru.translator.view.base.View
-import geekbrains.ru.translator.view.main.adapter.ItemTouchHelperAdapter
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
 import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
 import kotlinx.android.synthetic.main.activity_main.*
