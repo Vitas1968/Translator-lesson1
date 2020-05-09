@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
 import geekbrains.ru.translator.model.data.SearchResult
 import geekbrains.ru.translator.view.main.MainActivity
+import geekbrains.ru.translator.view.main.image_loader.GlideImageLoader
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.description_textview_recycler_item
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.header_textview_recycler_item
+import kotlinx.android.synthetic.main.item_card_view_image.view.*
 
 class MainAdapter(private var onListItemClickListener: OnListItemClickListener, private val dataList: List<SearchResult>, private val mainActivity: MainActivity) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>(),ItemTouchHelperAdapter {
     private var data=mutableListOf<SearchResult>()
+    private val glideImageLoader=GlideImageLoader()
     init {
         data.addAll(dataList)
     }
@@ -27,7 +30,7 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
         return RecyclerItemViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_card_view, parent, false)
+                .inflate(R.layout.item_card_view_image, parent, false)
         )
     }
 
@@ -72,12 +75,14 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
                             false
                         }
                     }
+                    data.meanings?.get(0)?.previewUrl?.let{
+                        glideImageLoader?.loadInto("https:$it",image_view)}
                     description_textview_recycler_item.text = data.meanings?.get(0)?.translation?.translation
                     setOnClickListener { openInNewWindow(data) }
                 }
+            }
+        }
 
-            }
-            }
 
 /*
         override fun onItemSelected() {
