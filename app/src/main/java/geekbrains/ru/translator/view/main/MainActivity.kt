@@ -3,6 +3,7 @@ package geekbrains.ru.translator.view.main
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,10 +58,13 @@ class MainActivity : BaseActivity<DataModel>(),OnStartDragListener {
                     if (adapter == null) {
                         adapter= MainAdapter(onListItemClickListener, searchResult, this)
                         main_activity_recyclerview.layoutManager = LinearLayoutManager(applicationContext)
-                       // main_activity_recyclerview.adapter =adapter
-                       // val callBack=MyItemTouchHelper(adapter)
-                        //itemTouchHelper=ItemTouchHelper(callBack)
-                       // itemTouchHelper.attachToRecyclerView(main_activity_recyclerview)
+                       /*
+                         main_activity_recyclerview.adapter =adapter
+                        val callBack=MyItemTouchHelper(adapter)
+                        itemTouchHelper=ItemTouchHelper(callBack)
+                        itemTouchHelper.attachToRecyclerView(main_activity_recyclerview)
+
+                        */
                         itemTouchHelper= adapter
                             .run{
                             main_activity_recyclerview.adapter =this
