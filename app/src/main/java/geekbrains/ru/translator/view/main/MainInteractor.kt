@@ -16,7 +16,8 @@ class MainInteractor(
             remoteRepository.getData(word).map {
                 DataModel.Success(it) }
         } else {
-            localRepository.getData(word).map { DataModel.Success(it) }
+            localRepository.getData(word).map {
+                DataModel.Success(it) }
         }
     }
 }

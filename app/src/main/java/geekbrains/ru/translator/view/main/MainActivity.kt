@@ -3,23 +3,25 @@ package geekbrains.ru.translator.view.main
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
-
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
 import geekbrains.ru.translator.model.data.DataModel
 import geekbrains.ru.translator.model.data.SearchResult
 import geekbrains.ru.translator.presenter.Presenter
 import geekbrains.ru.translator.view.base.BaseActivity
 import geekbrains.ru.translator.view.base.View
-import geekbrains.ru.translator.view.main.adapter.ItemTouchHelperAdapter
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
+import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity<DataModel>() {
+class MainActivity : BaseActivity<DataModel>(),OnStartDragListener {
 
     private var adapter: MainAdapter? = null
+    private lateinit var itemTouchHelper: ItemTouchHelper
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: SearchResult) {
@@ -54,11 +56,23 @@ class MainActivity : BaseActivity<DataModel>() {
                 } else {
                     showViewSuccess()
                     if (adapter == null) {
+                        adapter= MainAdapter(onListItemClickListener, searchResult, this)
                         main_activity_recyclerview.layoutManager = LinearLayoutManager(applicationContext)
-                        main_activity_recyclerview.adapter = MainAdapter(onListItemClickListener, searchResult)
-                        MyItemTouchHelper(adapter).run {
-                            ItemTouchHelper(this)
-                        }.attachToRecyclerView(main_activity_recyclerview)
+                       /*
+                         main_activity_recyclerview.adapter =adapter
+                        val callBack=MyItemTouchHelper(adapter)
+                        itemTouchHelper=ItemTouchHelper(callBack)
+                        itemTouchHelper.attachToRecyclerView(main_activity_recyclerview)
+
+                        */
+                        itemTouchHelper= adapter
+                            .run{
+                            main_activity_recyclerview.adapter =this
+                            MyItemTouchHelper(this)}
+                            .run{
+                                ItemTouchHelper(this)}
+                            .apply {
+                                attachToRecyclerView(main_activity_recyclerview)}
 
                     } else {
                         adapter!!.setData(searchResult)
@@ -110,5 +124,9 @@ class MainActivity : BaseActivity<DataModel>() {
 
     companion object {
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
+    }
+
+    override fun onStartDrag(viewHolder: RecyclerView.ViewHolder?) {
+        viewHolder?.let { itemTouchHelper.startDrag(it)}
     }
 }
