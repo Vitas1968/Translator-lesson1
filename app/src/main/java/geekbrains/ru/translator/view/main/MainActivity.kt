@@ -3,23 +3,27 @@ package geekbrains.ru.translator.view.main
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.ImageView
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
 import geekbrains.ru.translator.model.data.DataModel
 import geekbrains.ru.translator.model.data.SearchResult
-import geekbrains.ru.translator.presenter.Presenter
 import geekbrains.ru.translator.view.base.BaseActivity
-import geekbrains.ru.translator.view.base.View
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
 import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity<DataModel>(),OnStartDragListener {
+class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListener {
 
+    override val model: MainViewModel by lazy {
+        ViewModelProvider.NewInstanceFactory().create(MainViewModel::class.java)
+    }
+    private val observer = Observer<DataModel> {
+        renderData(it) }
     private var adapter: MainAdapter? = null
     private lateinit var itemTouchHelper: ItemTouchHelper
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
@@ -29,9 +33,7 @@ class MainActivity : BaseActivity<DataModel>(),OnStartDragListener {
             }
         }
 
-    override fun createPresenter(): Presenter<DataModel, View> {
-        return MainPresenterImpl()
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,7 @@ class MainActivity : BaseActivity<DataModel>(),OnStartDragListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object : SearchDialogFragment.OnSearchClickListener {
                 override fun onClick(searchWord: String) {
-                    presenter.getData(searchWord, true)
+                    model.getData(searchWord, true).observe(this@MainActivity, observer)
                 }
             })
             searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
@@ -100,7 +102,7 @@ class MainActivity : BaseActivity<DataModel>(),OnStartDragListener {
         showViewError()
         error_textview.text = error ?: getString(R.string.undefined_error)
         reload_button.setOnClickListener {
-            presenter.getData("hi", true)
+            model.getData("hi", true).observe(this, observer)
         }
     }
 
