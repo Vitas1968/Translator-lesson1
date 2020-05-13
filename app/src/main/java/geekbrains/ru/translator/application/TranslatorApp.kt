@@ -1,11 +1,11 @@
-package geekbrains.ru.translator.view.main
+package geekbrains.ru.translator.application
 
 import android.app.Application
 import timber.log.Timber
 
-class App: Application() {
+class TranslatorApp: Application() {
     companion object {
-        lateinit var instance: App
+        lateinit var instance: TranslatorApp
     }
     override fun onCreate() {
         super.onCreate()
