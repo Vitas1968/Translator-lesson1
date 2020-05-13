@@ -1,30 +1,12 @@
 package geekbrains.ru.translator.view.base
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.anikin.aleksandr.simplevocabulary.viewmodel.Interactor
 import geekbrains.ru.translator.model.data.DataModel
-import geekbrains.ru.translator.presenter.Presenter
+import geekbrains.ru.translator.viewmodel.BaseViewModel
 
-abstract class BaseActivity<T : DataModel> : AppCompatActivity(), View {
-
-    protected lateinit var presenter: Presenter<T, View>
-
-    protected abstract fun createPresenter(): Presenter<T, View>
-
-    abstract override fun renderData(dataModel: DataModel)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter = createPresenter()
+abstract class BaseActivity<T : DataModel, I : Interactor<T>> : AppCompatActivity() {
+    abstract val model: BaseViewModel<T>
+    abstract  fun renderData(dataModel: T)
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.attachView(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presenter.detachView(this)
-    }
-}
