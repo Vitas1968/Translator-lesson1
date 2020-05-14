@@ -14,6 +14,10 @@ class MainViewModel @Inject constructor(private val interactor: MainInteractor) 
 
     private var dataModel: DataModel? = null
 
+    fun subscribe(): LiveData<DataModel> {
+        return liveDataForViewToObserve
+    }
+
     override fun getData(word: String, isOnline: Boolean): LiveData<DataModel> {
         compositeDisposable.add(
             interactor.getData(word, isOnline)
