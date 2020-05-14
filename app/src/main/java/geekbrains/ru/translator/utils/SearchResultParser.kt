@@ -25,7 +25,7 @@ private fun parseResult(searchResult: SearchResult, newSearchResults: ArrayList<
         val newMeanings = arrayListOf<Meanings>()
         for (meaning in searchResult.meanings) {
             if (meaning.translation != null && !meaning.translation.translation.isNullOrBlank()) {
-                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
+                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl,meaning.previewUrl))
             }
         }
         if (newMeanings.isNotEmpty()) {
