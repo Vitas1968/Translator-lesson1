@@ -81,8 +81,6 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        fun newInstance(): SearchDialogFragment {
-            return SearchDialogFragment()
-        }
+        fun newInstance()=SearchDialogFragment()
     }
 }

@@ -17,7 +17,7 @@ class MyItemTouchHelper(private val adapter: ItemTouchHelperAdapter?): ItemTouch
     }
 
 
-
+/*
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
             val itemViewHolder: ItemTouchHelperViewHolder = viewHolder as ItemTouchHelperViewHolder
@@ -26,6 +26,7 @@ class MyItemTouchHelper(private val adapter: ItemTouchHelperAdapter?): ItemTouch
         super.onSelectedChanged(viewHolder, actionState)
     }
 
+
     override fun clearView(recyclerView: RecyclerView,
                            viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
@@ -33,6 +34,7 @@ class MyItemTouchHelper(private val adapter: ItemTouchHelperAdapter?): ItemTouch
         itemViewHolder.onItemClear()
     }
 
+ */
 
 
     override fun onMove(

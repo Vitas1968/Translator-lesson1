@@ -1,38 +1,22 @@
 package geekbrains.ru.translator.view.main
 
+import androidx.lifecycle.LiveData
 import geekbrains.ru.translator.model.data.DataModel
 import geekbrains.ru.translator.model.datasource.DataSourceLocal
 import geekbrains.ru.translator.model.datasource.DataSourceRemote
 import geekbrains.ru.translator.model.repository.RepositoryImplementation
-import geekbrains.ru.translator.presenter.Presenter
-import geekbrains.ru.translator.rx.SchedulerProvider
-import geekbrains.ru.translator.view.base.View
-import io.reactivex.disposables.CompositeDisposable
+import geekbrains.ru.translator.utils.parseSearchResults
+import geekbrains.ru.translator.viewmodel.BaseViewModel
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
+import javax.inject.Inject
 
-class MainPresenterImpl<T : DataModel, V : View>(
-    private val interactor: MainInteractor = MainInteractor(
-        RepositoryImplementation(DataSourceRemote()),
-        RepositoryImplementation(DataSourceLocal())
-    ),
-    protected val compositeDisposable: CompositeDisposable = CompositeDisposable(),
-    protected val schedulerProvider: SchedulerProvider = SchedulerProvider()
-) : Presenter<T, V> {
+class MainViewModel @Inject constructor(private val interactor: MainInteractor) : BaseViewModel<DataModel>() {
 
-    private var currentView: V? = null
+    private var dataModel: DataModel? = null
 
-    override fun attachView(view: V) {
-        if (view != currentView) {
-            currentView = view
-        }
-    }
-
-    override fun detachView(view: V) {
-        compositeDisposable.clear()
-        if (view == currentView) {
-            currentView = null
-        }
+    fun subscribe(): LiveData<DataModel> {
+        return liveDataForViewToObserve
     }
 
     override fun getData(word: String, isOnline: Boolean) {
@@ -44,19 +28,19 @@ class MainPresenterImpl<T : DataModel, V : View>(
                 .subscribeWith(getObserver())
         )
     }
-
     private fun doOnSubscribe(): (Disposable) -> Unit =
-        { currentView?.renderData(DataModel.Loading(null)) }
+        { liveDataForViewToObserve.value = DataModel.Loading(null) }
 
     private fun getObserver(): DisposableObserver<DataModel> {
         return object : DisposableObserver<DataModel>() {
 
             override fun onNext(data: DataModel) {
-                currentView?.renderData(data)
+                dataModel = parseSearchResults(data)
+                liveDataForViewToObserve.value = dataModel
             }
 
             override fun onError(e: Throwable) {
-                currentView?.renderData(DataModel.Error(e))
+                liveDataForViewToObserve.value = DataModel.Error(e)
             }
 
             override fun onComplete() {

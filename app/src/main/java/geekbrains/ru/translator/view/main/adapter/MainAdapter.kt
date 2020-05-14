@@ -1,53 +1,45 @@
 package geekbrains.ru.translator.view.main.adapter
 
-import android.graphics.Color
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
 import geekbrains.ru.translator.model.data.SearchResult
-import geekbrains.ru.translator.view.main.ItemTouchHelperViewHolder
-import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.*
-import java.util.*
+import geekbrains.ru.translator.utils.convertMeaningsToString
+import geekbrains.ru.translator.view.main.MainActivity
+import geekbrains.ru.translator.view.main.image_loader.GlideImageLoader
+import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.description_textview_recycler_item
+import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.header_textview_recycler_item
+import kotlinx.android.synthetic.main.item_card_view_image.view.*
 
-class MainAdapter(private var onListItemClickListener: OnListItemClickListener, private val dataList: List<SearchResult>) :
+class MainAdapter(private var onListItemClickListener: OnListItemClickListener, private val mainActivity: MainActivity) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>(),ItemTouchHelperAdapter {
+    private var data=mutableListOf<SearchResult>()
+    private val glideImageLoader=GlideImageLoader()
 
-    private var data=dataList.toMutableList()
-    fun setData(data: List<SearchResult>) {
-        this.data = data.toMutableList()
+    fun setData(dataListSearchResult: List<SearchResult>) {
+        data.addAll(dataListSearchResult)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
         return RecyclerItemViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.activity_main_recyclerview_item, parent, false) as View
+                .inflate(R.layout.item_card_view_image, parent, false)
         )
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
         holder.bind(data[position])
     }
-    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        if (fromPosition < toPosition) {
-            for (i in fromPosition until toPosition) {
-                Collections.swap(data, i, i + 1)
-            }
-        } else {
-            for (i in fromPosition downTo toPosition + 1) {
-                Collections.swap(data, i, i - 1)
-            }
-        }
-
-
-//        var itemData=data.removeAt(fromPosition)
-//        data.add(if (toPosition > fromPosition) toPosition - 1 else toPosition,itemData)
-
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        var itemData=data.removeAt(fromPosition)
+        data.add(if (toPosition > fromPosition) toPosition - 1 else toPosition,itemData)
         notifyItemMoved(fromPosition, toPosition)
-
-        return true
     }
 
     override fun onItemDismiss(position: Int) {
@@ -56,9 +48,8 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
 
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
+    override fun getItemCount()=data.size
+
     private fun openInNewWindow(listItemData: SearchResult) {
         onListItemClickListener.onItemClick(listItemData)
     }
@@ -67,17 +58,31 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
         fun onItemClick(data: SearchResult)
     }
 
-    inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view),
-        ItemTouchHelperViewHolder {
+    inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view)/*,
+        ItemTouchHelperViewHolder*/ {
 
         fun bind(data: SearchResult) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.header_textview_recycler_item.text = data.text
-                itemView.description_textview_recycler_item.text = data.meanings?.get(0)?.translation?.translation
-                itemView.setOnClickListener { openInNewWindow(data) }
+                itemView.apply {
+                    header_textview_recycler_item.apply {
+                        text = data.text
+                        setOnTouchListener { _, event ->
+                            if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                                mainActivity.onStartDrag(this@RecyclerItemViewHolder)
+                            }
+                            false
+                        }
+                    }
+                    data.meanings?.get(0)?.previewUrl?.let{
+                        glideImageLoader?.loadInto("https:$it",image_view)}
+                    description_textview_recycler_item.text = convertMeaningsToString(data.meanings!!)
+                    setOnClickListener { openInNewWindow(data) }
+                }
             }
         }
 
+
+/*
         override fun onItemSelected() {
             itemView.setBackgroundColor(Color.LTGRAY)
         }
@@ -85,6 +90,7 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
         override fun onItemClear() {
             itemView.setBackgroundColor(0)
         }
-    }
 
+ */
+    }
 }
