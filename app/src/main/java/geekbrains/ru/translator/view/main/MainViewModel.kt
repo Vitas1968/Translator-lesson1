@@ -8,13 +8,9 @@ import geekbrains.ru.translator.model.repository.RepositoryImplementation
 import geekbrains.ru.translator.viewmodel.BaseViewModel
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
+import javax.inject.Inject
 
-class MainViewModel(
-    private val interactor: MainInteractor = MainInteractor(
-        RepositoryImplementation(DataSourceRemote()),
-        RepositoryImplementation(DataSourceLocal())
-    )
-) : BaseViewModel<DataModel>() {
+class MainViewModel @Inject constructor(private val interactor: MainInteractor) : BaseViewModel<DataModel>() {
 
     private var dataModel: DataModel? = null
 
