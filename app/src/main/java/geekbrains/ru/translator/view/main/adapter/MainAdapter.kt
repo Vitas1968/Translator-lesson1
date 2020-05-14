@@ -8,19 +8,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
 import geekbrains.ru.translator.model.data.SearchResult
+import geekbrains.ru.translator.utils.convertMeaningsToString
 import geekbrains.ru.translator.view.main.MainActivity
 import geekbrains.ru.translator.view.main.image_loader.GlideImageLoader
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.description_textview_recycler_item
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.header_textview_recycler_item
 import kotlinx.android.synthetic.main.item_card_view_image.view.*
 
-class MainAdapter(private var onListItemClickListener: OnListItemClickListener, private val dataList: List<SearchResult>, private val mainActivity: MainActivity) :
+class MainAdapter(private var onListItemClickListener: OnListItemClickListener, private val mainActivity: MainActivity) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>(),ItemTouchHelperAdapter {
     private var data=mutableListOf<SearchResult>()
     private val glideImageLoader=GlideImageLoader()
-    init {
-        data.addAll(dataList)
-    }
 
     fun setData(dataListSearchResult: List<SearchResult>) {
         data.addAll(dataListSearchResult)
@@ -77,7 +75,7 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
                     }
                     data.meanings?.get(0)?.previewUrl?.let{
                         glideImageLoader?.loadInto("https:$it",image_view)}
-                    description_textview_recycler_item.text = data.meanings?.get(0)?.translation?.translation
+                    description_textview_recycler_item.text = convertMeaningsToString(data.meanings!!)
                     setOnClickListener { openInNewWindow(data) }
                 }
             }
