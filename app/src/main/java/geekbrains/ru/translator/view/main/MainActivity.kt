@@ -69,7 +69,21 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
         search_fab.setOnClickListener(fabClickListener)
         main_activity_recyclerview.layoutManager = LinearLayoutManager(applicationContext)
         main_activity_recyclerview.adapter = adapter
+        itemTouchHelper = getItemTochHelper()
     }
+
+    private fun getItemTochHelper()=
+         adapter
+            .run {
+                MyItemTouchHelper(this)
+            }
+            .run {
+                ItemTouchHelper(this)
+            }
+            .apply {
+                attachToRecyclerView(main_activity_recyclerview)
+            }
+
 
     override fun renderData(dataModel: DataModel) {
         when (dataModel) {
