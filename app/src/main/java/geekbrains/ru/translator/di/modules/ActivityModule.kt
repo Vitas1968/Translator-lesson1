@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.di
+package geekbrains.ru.translator.di.modules
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

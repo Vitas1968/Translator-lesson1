@@ -1,7 +1,9 @@
-package geekbrains.ru.translator.di
+package geekbrains.ru.translator.di.modules
 
 import dagger.Module
 import dagger.Provides
+import geekbrains.ru.translator.di.NAME_LOCAL
+import geekbrains.ru.translator.di.NAME_REMOTE
 import geekbrains.ru.translator.model.data.SearchResult
 import geekbrains.ru.translator.model.repository.Repository
 import geekbrains.ru.translator.view.main.MainInteractor
