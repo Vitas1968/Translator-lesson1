@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import geekbrains.ru.translator.di.ViewModelFactory
+import geekbrains.ru.translator.di.ViewModelKey
 import geekbrains.ru.translator.view.main.MainViewModel
 
 @Module(includes = [InteractorModule::class])
