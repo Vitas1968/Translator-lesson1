@@ -5,6 +5,10 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import geekbrains.ru.translator.application.TranslatorApp
+import geekbrains.ru.translator.di.modules.ActivityModule
+import geekbrains.ru.translator.di.modules.InteractorModule
+import geekbrains.ru.translator.di.modules.RepositoryModule
+import geekbrains.ru.translator.di.modules.ViewModelModule
 import javax.inject.Singleton
 
 @Component(
