@@ -28,7 +28,6 @@ class MainViewModel(
         )
         return super.getData(word, isOnline)
     }
-
     private fun doOnSubscribe(): (Disposable) -> Unit =
         { liveDataForViewToObserve.value = DataModel.Loading(null) }
 
