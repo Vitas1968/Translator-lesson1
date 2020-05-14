@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import geekbrains.ru.translator.di.DaggerAppComponent
 import timber.log.Timber
 import javax.inject.Inject
 
