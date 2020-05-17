@@ -2,16 +2,12 @@ package geekbrains.ru.translator.view.main
 
 import androidx.lifecycle.LiveData
 import geekbrains.ru.translator.model.data.DataModel
-import geekbrains.ru.translator.model.datasource.DataSourceLocal
-import geekbrains.ru.translator.model.datasource.DataSourceRemote
-import geekbrains.ru.translator.model.repository.RepositoryImplementation
 import geekbrains.ru.translator.utils.parseSearchResults
 import geekbrains.ru.translator.viewmodel.BaseViewModel
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
-import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val interactor: MainInteractor) : BaseViewModel<DataModel>() {
+class MainViewModel(private val interactor: MainInteractor) : BaseViewModel<DataModel>() {
 
     private var dataModel: DataModel? = null
 
