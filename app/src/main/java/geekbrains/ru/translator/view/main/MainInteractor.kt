@@ -11,13 +11,13 @@ class MainInteractor(
     private val localRepository: Repository<List<SearchResult>>
 ) : Interactor<DataModel> {
 
-    override fun getData(word: String, fromRemoteSource: Boolean): Observable<DataModel> {
-        return if (fromRemoteSource) {
-            remoteRepository.getData(word).map {
-                DataModel.Success(it) }
-        } else {
-            localRepository.getData(word).map {
-                DataModel.Success(it) }
-        }
+    override suspend fun getData(word: String, fromRemoteSource: Boolean): DataModel {
+        return DataModel.Success(
+            if (fromRemoteSource) {
+                remoteRepository
+            } else {
+                localRepository
+            }.getData(word)
+        )
     }
 }
