@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import geekbrains.ru.translator.model.data.DataModel
 import geekbrains.ru.translator.utils.parseSearchResults
 import geekbrains.ru.translator.viewmodel.BaseViewModel
-import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableObserver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
