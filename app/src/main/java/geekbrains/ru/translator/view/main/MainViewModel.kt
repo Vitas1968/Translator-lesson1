@@ -6,41 +6,33 @@ import geekbrains.ru.translator.utils.parseSearchResults
 import geekbrains.ru.translator.viewmodel.BaseViewModel
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel(private val interactor: MainInteractor) : BaseViewModel<DataModel>() {
-
-    private var dataModel: DataModel? = null
+    private val liveDataForViewToObserve: LiveData<DataModel> = _mutableLiveData
 
     fun subscribe(): LiveData<DataModel> {
         return liveDataForViewToObserve
     }
 
     override fun getData(word: String, isOnline: Boolean) {
-        compositeDisposable.add(
-            interactor.getData(word, isOnline)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .doOnSubscribe(doOnSubscribe())
-                .subscribeWith(getObserver())
-        )
+            _mutableLiveData.value = DataModel.Loading(null)
+                    cancelJob()
+                    viewModelCoroutineScope.launch { startInteractor(word, isOnline) }
     }
-    private fun doOnSubscribe(): (Disposable) -> Unit =
-        { liveDataForViewToObserve.value = DataModel.Loading(null) }
 
-    private fun getObserver(): DisposableObserver<DataModel> {
-        return object : DisposableObserver<DataModel>() {
+    override fun handleError(error: Throwable) {
+        _mutableLiveData.postValue(DataModel.Error(error))
+    }
 
-            override fun onNext(data: DataModel) {
-                dataModel = parseSearchResults(data)
-                liveDataForViewToObserve.value = dataModel
-            }
+    private suspend fun startInteractor(word: String, isOnline: Boolean) = withContext(Dispatchers.IO) {
+        _mutableLiveData.postValue(parseSearchResults(interactor.getData(word, isOnline)))
+    }
 
-            override fun onError(e: Throwable) {
-                liveDataForViewToObserve.value = DataModel.Error(e)
-            }
-
-            override fun onComplete() {
-            }
-        }
+    override fun onCleared() {
+        _mutableLiveData.value = DataModel.Success(null)
+        super.onCleared()
     }
 }
