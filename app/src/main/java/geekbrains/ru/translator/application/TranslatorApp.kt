@@ -1,27 +1,20 @@
 package geekbrains.ru.translator.application
 
-import android.app.Activity
+
 import android.app.Application
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import geekbrains.ru.translator.di.DaggerAppComponent
-import timber.log.Timber
-import javax.inject.Inject
+import geekbrains.ru.translator.di.application
+import geekbrains.ru.translator.di.mainScreen
+import org.koin.core.context.startKoin
 
-class TranslatorApp: Application() , HasActivityInjector {
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+class TranslatorApp: Application()  {
 
-    override fun activityInjector(): DispatchingAndroidInjector<Activity>? {
-        return dispatchingAndroidInjector
-    }
+
 
     override fun onCreate() {
         super.onCreate()
-        DaggerAppComponent.builder()
-            .application(this)
-            .build()
-            .inject(this)
+        startKoin {
+            modules(listOf(application, mainScreen))
+        }
     }
 }
