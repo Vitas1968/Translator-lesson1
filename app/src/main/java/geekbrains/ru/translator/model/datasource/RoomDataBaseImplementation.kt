@@ -1,7 +1,6 @@
 package geekbrains.ru.translator.model.datasource
 
 import geekbrains.ru.translator.model.data.SearchResult
-import io.reactivex.Observable
 
 class RoomDataBaseImplementation : DataSource<List<SearchResult>> {
 
