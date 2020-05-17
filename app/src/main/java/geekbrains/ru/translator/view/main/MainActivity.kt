@@ -22,10 +22,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListener {
 
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
-
     override lateinit var model: MainViewModel
-
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener,this) }
     private lateinit var itemTouchHelper: ItemTouchHelper
 
