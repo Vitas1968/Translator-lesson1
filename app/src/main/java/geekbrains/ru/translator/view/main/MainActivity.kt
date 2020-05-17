@@ -18,6 +18,7 @@ import geekbrains.ru.translator.view.base.BaseActivity
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
 import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListener {
 
@@ -55,15 +56,26 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        iniViewModel()
+        initViews()
+        itemTouchHelper = getItemTochHelper()
+    }
 
-        model = viewModelFactory.create(MainViewModel::class.java)
+    private fun iniViewModel() {
+        if (main_activity_recyclerview.adapter != null) {
+            throw IllegalStateException("The ViewModel should be initialised first")
+        }
+        val viewModel: MainViewModel by viewModel()
+        model = viewModel
         model.subscribe().observe(this@MainActivity, Observer<DataModel> { renderData(it) })
+    }
 
+    private fun initViews() {
         search_fab.setOnClickListener(fabClickListener)
         main_activity_recyclerview.layoutManager = LinearLayoutManager(applicationContext)
         main_activity_recyclerview.adapter = adapter
-        itemTouchHelper = getItemTochHelper()
     }
+
 
     private fun getItemTochHelper()=
          adapter
