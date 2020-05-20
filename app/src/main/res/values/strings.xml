@@ -16,4 +16,5 @@
     <string name="dialog_button_cancel">Cancel</string>
     <string name="dialog_title_stub">Undefined error</string>
     <string name="dialog_tittle_sorry">Sorry</string>
+    <string name="menu_title_history">History</string>
 </resources>
