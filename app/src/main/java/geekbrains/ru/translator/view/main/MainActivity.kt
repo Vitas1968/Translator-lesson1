@@ -22,6 +22,7 @@ import geekbrains.ru.translator.view.history.HistoryActivity
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
 import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
 import geekbrains.ru.translator.utils.convertMeaningsToString
+import geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
