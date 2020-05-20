@@ -28,8 +28,10 @@ android {
 
 dependencies {
     //AndroidX
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'com.android.support:multidex:1.0.3'
+
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 
     //Design
     //You should not use the com.android.support and com.google.android.material dependencies in your app at the same time
@@ -51,6 +53,11 @@ dependencies {
     //Koin for Android
     implementation 'org.koin:koin-android:2.0.1'
     implementation 'org.koin:koin-android-viewmodel:2.0.1'
+
+    //Room
+    implementation 'androidx.room:room-runtime:2.2.0-alpha01'
+    kapt 'androidx.room:room-compiler:2.2.0-alpha01'
+    implementation 'androidx.room:room-ktx:2.2.0-alpha01'
 
     //Retrofit 2
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
