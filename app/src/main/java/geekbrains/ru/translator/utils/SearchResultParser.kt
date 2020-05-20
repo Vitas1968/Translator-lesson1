@@ -3,6 +3,7 @@ package geekbrains.ru.translator.utils
 import geekbrains.ru.translator.model.data.DataModel
 import geekbrains.ru.translator.model.data.Meanings
 import geekbrains.ru.translator.model.data.SearchResult
+import geekbrains.ru.translator.room.HistoryEntity
 
 fun parseOnlineSearchResults(data: DataModel): DataModel {
     return DataModel.Success(mapResult(data, true))
@@ -49,7 +50,7 @@ private fun parseOnlineResult(searchResult: SearchResult, newSearchResults: Arra
         val newMeanings = arrayListOf<Meanings>()
         for (meaning in searchResult.meanings) {
             if (meaning.translation != null && !meaning.translation.translation.isNullOrBlank()) {
-                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
+                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl,meaning.previewUrl))
             }
         }
         if (newMeanings.isNotEmpty()) {
