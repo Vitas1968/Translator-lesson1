@@ -13,8 +13,6 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import geekbrains.ru.translator.R
 import geekbrains.ru.translator.utils.network.isOnline
 import geekbrains.ru.translator.utils.ui.AlertDialogFragment
@@ -59,7 +57,6 @@ class DescriptionActivity : AppCompatActivity() {
         if (imageLink.isNullOrBlank()) {
             stopRefreshAnimationIfNeeded()
         } else {
-            //usePicassoToLoadPhoto(description_imageview, imageLink)
             useGlideToLoadPhoto(description_imageview, imageLink!!)
         }
     }
@@ -85,20 +82,7 @@ class DescriptionActivity : AppCompatActivity() {
         }
     }
 
-    private fun usePicassoToLoadPhoto(imageView: ImageView, imageLink: String) {
-        Picasso.with(applicationContext).load("https:$imageLink")
-            .placeholder(R.drawable.ic_no_photo_vector).fit().centerCrop()
-            .into(imageView, object : Callback {
-                override fun onSuccess() {
-                    stopRefreshAnimationIfNeeded()
-                }
 
-                override fun onError() {
-                    stopRefreshAnimationIfNeeded()
-                    imageView.setImageResource(R.drawable.ic_load_error_vector)
-                }
-            })
-    }
 
     private fun useGlideToLoadPhoto(imageView: ImageView, imageLink: String) {
         Glide.with(imageView)
