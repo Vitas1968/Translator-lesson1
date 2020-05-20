@@ -1,5 +1,6 @@
 package geekbrains.ru.translator.view.history
 
+import com.anikin.aleksandr.simplevocabulary.viewmodel.Interactor
 import geekbrains.ru.translator.model.data.DataModel
 import geekbrains.ru.translator.model.data.SearchResult
 import geekbrains.ru.translator.model.repository.Repository
