@@ -5,7 +5,7 @@ import geekbrains.ru.translator.model.data.DataModel
 import geekbrains.ru.translator.model.data.SearchResult
 import geekbrains.ru.translator.model.repository.Repository
 import geekbrains.ru.translator.model.repository.RepositoryLocal
-import geekbrains.ru.translator.viewmodel.Interactor
+
 
 class HistoryInteractor(
     private val repositoryRemote: Repository<List<SearchResult>>,
