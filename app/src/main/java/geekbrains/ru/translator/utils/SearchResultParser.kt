@@ -4,28 +4,52 @@ import geekbrains.ru.translator.model.data.DataModel
 import geekbrains.ru.translator.model.data.Meanings
 import geekbrains.ru.translator.model.data.SearchResult
 
-fun parseSearchResults(data: DataModel): DataModel {
+fun parseOnlineSearchResults(data: DataModel): DataModel {
+    return DataModel.Success(mapResult(data, true))
+}
+
+fun parseLocalSearchResults(data: DataModel): DataModel {
+    return DataModel.Success(mapResult(data, false))
+}
+
+private fun mapResult(
+    data: DataModel,
+    isOnline: Boolean
+): List<SearchResult> {
     val newSearchResults = arrayListOf<SearchResult>()
     when (data) {
         is DataModel.Success -> {
-            val searchResults = data.data
-            if (!searchResults.isNullOrEmpty()) {
-                for (searchResult in searchResults) {
-                    parseResult(searchResult, newSearchResults)
-                }
+            getSuccessResultData(data, isOnline, newSearchResults)
+        }
+    }
+    return newSearchResults
+}
+
+private fun getSuccessResultData(
+    data: DataModel.Success,
+    isOnline: Boolean,
+    newSearchResults: ArrayList<SearchResult>
+) {
+    val searchResults: List<SearchResult> = data.data as List<SearchResult>
+    if (searchResults.isNotEmpty()) {
+        if (isOnline) {
+            for (searchResult in searchResults) {
+                parseOnlineResult(searchResult, newSearchResults)
+            }
+        } else {
+            for (searchResult in searchResults) {
+                newSearchResults.add(SearchResult(searchResult.text, arrayListOf()))
             }
         }
     }
-
-    return DataModel.Success(newSearchResults)
 }
 
-private fun parseResult(searchResult: SearchResult, newSearchResults: ArrayList<SearchResult>) {
+private fun parseOnlineResult(searchResult: SearchResult, newSearchResults: ArrayList<SearchResult>) {
     if (!searchResult.text.isNullOrBlank() && !searchResult.meanings.isNullOrEmpty()) {
         val newMeanings = arrayListOf<Meanings>()
         for (meaning in searchResult.meanings) {
             if (meaning.translation != null && !meaning.translation.translation.isNullOrBlank()) {
-                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl,meaning.previewUrl))
+                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
             }
         }
         if (newMeanings.isNotEmpty()) {
@@ -34,14 +58,26 @@ private fun parseResult(searchResult: SearchResult, newSearchResults: ArrayList<
     }
 }
 
-fun convertMeaningsToString(meanings: List<Meanings>): String {
-    var meaningsSeparatedByComma = String()
-    for ((index, meaning) in meanings.withIndex()) {
-        meaningsSeparatedByComma += if (index + 1 != meanings.size) {
-            String.format("%s%s", meaning.translation?.translation, ", ")
-        } else {
-            meaning.translation?.translation
+fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<SearchResult> {
+    val searchResult = ArrayList<SearchResult>()
+    if (!list.isNullOrEmpty()) {
+        for (entity in list) {
+            searchResult.add(SearchResult(entity.word, null))
         }
     }
-    return meaningsSeparatedByComma
+    return searchResult
+}
+
+fun convertDataModelSuccessToEntity(dataModel: DataModel): HistoryEntity? {
+    return when (dataModel) {
+        is DataModel.Success -> {
+            val searchResult = dataModel.data
+            if (searchResult.isNullOrEmpty() || searchResult[0].text.isNullOrEmpty()) {
+                null
+            } else {
+                HistoryEntity(searchResult[0].text!!, null)
+            }
+        }
+        else -> null
+    }
 }
