@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.model.datasource
+package geekbrains.ru.translator.model.data.api
 
 import geekbrains.ru.translator.model.data.SearchResult
 import kotlinx.coroutines.Deferred
