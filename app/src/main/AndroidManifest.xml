@@ -20,6 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.descriptionscreen.DescriptionActivity"
+            android:screenOrientation="fullSensor"/>
+        <activity
+            android:name=".view.history.HistoryActivity"
+            android:screenOrientation="fullSensor"/>
     </application>
 
 </manifest>
