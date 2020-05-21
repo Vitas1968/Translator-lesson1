@@ -41,7 +41,7 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
                         this@MainActivity,
                         data.text!!,
                         convertMeaningsToString(data.meanings!!),
-                        data?.meanings?.get(0)?.imageUrl
+                        data.meanings[0].imageUrl
                     )
                 )
             }
@@ -109,6 +109,7 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
     private fun initViews() {
         search_fab.setOnClickListener(fabClickListener)
         main_activity_recyclerview.adapter = adapter
+
     }
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder?) {
