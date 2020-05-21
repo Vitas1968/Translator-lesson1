@@ -2,7 +2,7 @@ package geekbrains.ru.translator.view.main
 
 import androidx.lifecycle.LiveData
 import geekbrains.ru.translator.model.data.DataModel
-import geekbrains.ru.translator.utils.parseSearchResults
+import geekbrains.ru.translator.utils.parseOnlineSearchResults
 import geekbrains.ru.translator.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,7 +26,7 @@ class MainViewModel(private val interactor: MainInteractor) : BaseViewModel<Data
     }
 
     private suspend fun startInteractor(word: String, isOnline: Boolean) = withContext(Dispatchers.IO) {
-        _mutableLiveData.postValue(parseSearchResults(interactor.getData(word, isOnline)))
+        _mutableLiveData.postValue(parseOnlineSearchResults(interactor.getData(word, isOnline)))
     }
 
     override fun onCleared() {
