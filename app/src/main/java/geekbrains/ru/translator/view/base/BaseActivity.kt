@@ -11,7 +11,8 @@ import geekbrains.ru.translator.model.data.SearchResult
 import geekbrains.ru.translator.utils.network.isOnline
 import geekbrains.ru.translator.utils.ui.AlertDialogFragment
 import geekbrains.ru.translator.viewmodel.BaseViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.loading_layout.*
+
 
 private const val DIALOG_FRAGMENT_TAG = "74a54328-5d62-46bf-ab6b-cbf5d8c79522"
 
