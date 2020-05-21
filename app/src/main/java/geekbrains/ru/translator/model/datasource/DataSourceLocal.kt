@@ -1,10 +1,8 @@
 package geekbrains.ru.translator.model.datasource
 
-import geekbrains.ru.translator.model.data.SearchResult
-import io.reactivex.Observable
+import geekbrains.ru.translator.model.data.DataModel
 
-class DataSourceLocal(private val remoteProvider: RoomDataBaseImplementation = RoomDataBaseImplementation()) :
-    DataSource<List<SearchResult>> {
+interface DataSourceLocal<T> : DataSource<T> {
 
-    override fun getData(word: String): Observable<List<SearchResult>> = remoteProvider.getData(word)
+    suspend fun saveToDB(dataModel: DataModel)
 }
