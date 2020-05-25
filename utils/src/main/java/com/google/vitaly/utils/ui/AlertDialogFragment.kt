@@ -3,6 +3,8 @@ package geekbrains.ru.translator.utils.ui
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialogFragment
+import com.google.vitaly.utils.ui.getAlertDialog
+import com.google.vitaly.utils.ui.getStubAlertDialog
 
 class AlertDialogFragment : AppCompatDialogFragment() {
 
