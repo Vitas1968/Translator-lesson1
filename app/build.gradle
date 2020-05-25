@@ -31,8 +31,8 @@ dependencies {
     implementation project(Modules.core)
     implementation project(Modules.historyScreen) //Feature
 
-    //implementation project(Modules.repository)
-    //implementation project(Modules.utils)
+    implementation project(Modules.repository)
+    implementation project(Modules.utils)
 
     //AndroidX
     implementation Tools.multidex

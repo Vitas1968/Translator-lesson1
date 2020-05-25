@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 
 dependencies {
-  //  implementation project(Modules.utils)
+    implementation project(Modules.utils)
 
     implementation Design.appcompat
 
