@@ -1,6 +1,5 @@
-package com.google.vitaly.historyscreen
+package geekbrains.ru.history
 
-import com.google.vitaly.model.data.DataModel
 import geekbrains.ru.model.data.DataModel
 import geekbrains.ru.model.data.Meanings
 import geekbrains.ru.model.data.SearchResult
