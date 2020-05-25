@@ -14,8 +14,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import geekbrains.ru.translator.R
-import geekbrains.ru.translator.utils.network.isOnline
-import geekbrains.ru.translator.utils.ui.AlertDialogFragment
+import com.google.vitaly.utils.network.isOnline
 import kotlinx.android.synthetic.main.activity_description.*
 
 class DescriptionActivity : AppCompatActivity() {

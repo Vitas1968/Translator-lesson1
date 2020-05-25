@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult
-import geekbrains.ru.translator.utils.network.isOnline
-import com.google.vitaly.core.BaseActivity
+import com.google.vitaly.utils.network.isOnline
 import com.google.vitaly.historyscreen.view.history.HistoryActivity
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
 import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
-import com.google.vitaly.historyscreen.convertMeaningsToString
+import geekbrains.ru.translator.utils.convertMeaningsToString
 import geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity
+import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 class MainActivity : com.google.vitaly.core.BaseActivity<DataModel, MainInteractor>(),OnStartDragListener {
@@ -41,7 +42,7 @@ class MainActivity : com.google.vitaly.core.BaseActivity<DataModel, MainInteract
                         convertMeaningsToString(
                             data.meanings!!
                         ),
-                        data.meanings[0].imageUrl
+                        data.meanings!![0].imageUrl
                     )
                 )
             }

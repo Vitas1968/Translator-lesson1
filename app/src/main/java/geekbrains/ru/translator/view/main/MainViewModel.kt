@@ -2,9 +2,9 @@ package geekbrains.ru.translator.view.main
 
 import androidx.lifecycle.LiveData
 import com.google.vitaly.model.data.DataModel
-import com.google.vitaly.historyscreen.parseOnlineSearchResults
-import com.google.vitaly.core.viewmodel.BaseViewModel
+import geekbrains.ru.translator.utils.parseOnlineSearchResults
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainViewModel(private val interactor: MainInteractor) : com.google.vitaly.core.viewmodel.BaseViewModel<DataModel>() {

@@ -1,3 +1,3 @@
-package geekbrains.ru.translator.utils
+package com.google.vitaly.utils
 
 fun String.Companion.getEmptyString(): String = ""

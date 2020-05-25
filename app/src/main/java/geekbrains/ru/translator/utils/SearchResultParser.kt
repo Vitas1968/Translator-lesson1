@@ -1,8 +1,8 @@
 package geekbrains.ru.translator.utils
 
-import geekbrains.ru.model.data.DataModel
-import geekbrains.ru.model.data.Meanings
-import geekbrains.ru.model.data.SearchResult
+import com.google.vitaly.model.data.DataModel
+import com.google.vitaly.model.data.Meanings
+import com.google.vitaly.model.data.SearchResult
 
 fun parseOnlineSearchResults(data: DataModel): DataModel {
     return DataModel.Success(mapResult(data, true))
@@ -48,7 +48,7 @@ private fun parseOnlineResult(
         val newMeanings = arrayListOf<Meanings>()
         for (meaning in searchResult.meanings!!) {
             if (meaning.translation != null && !meaning.translation!!.translation.isNullOrBlank()) {
-                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
+                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl,meaning.previewUrl))
             }
         }
         if (newMeanings.isNotEmpty()) {

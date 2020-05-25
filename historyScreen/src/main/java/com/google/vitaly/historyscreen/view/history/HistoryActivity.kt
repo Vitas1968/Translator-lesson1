@@ -2,10 +2,10 @@ package com.google.vitaly.historyscreen.view.history
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import geekbrains.ru.translator.R
+import com.google.vitaly.core.BaseActivity
+import com.google.vitaly.historyscreen.R
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult
-import geekbrains.ru.translator.view.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_history.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
