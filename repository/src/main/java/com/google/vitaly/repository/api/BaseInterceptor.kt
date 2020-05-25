@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.model.data.api
+package com.google.vitaly.repository.api
 
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -23,8 +23,10 @@ class BaseInterceptor private constructor() : Interceptor {
         var statusCode =
             ServerResponseStatusCode.UNDEFINED_ERROR
         when (responseCode / 100) {
-            1 -> statusCode = ServerResponseStatusCode.INFO
-            2 -> statusCode = ServerResponseStatusCode.SUCCESS
+            1 -> statusCode =
+                ServerResponseStatusCode.INFO
+            2 -> statusCode =
+                ServerResponseStatusCode.SUCCESS
             3 -> statusCode =
                 ServerResponseStatusCode.REDIRECTION
             4 -> statusCode =

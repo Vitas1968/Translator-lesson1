@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.room
+package com.google.vitaly.repository.room
 
 import androidx.room.*
 

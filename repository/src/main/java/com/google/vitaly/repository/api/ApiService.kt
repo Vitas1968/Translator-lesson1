@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.model.data.api
+package com.google.vitaly.repository.api
 
 import com.google.vitaly.model.data.SearchResult
 import kotlinx.coroutines.Deferred

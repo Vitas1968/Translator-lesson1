@@ -1,8 +1,8 @@
-package geekbrains.ru.repository
+package com.google.vitaly.repository
 
-import geekbrains.ru.model.data.DataModel
-import geekbrains.ru.model.data.SearchResult
-import geekbrains.ru.repository.room.HistoryEntity
+import com.google.vitaly.model.data.DataModel
+import com.google.vitaly.model.data.SearchResult
+import com.google.vitaly.repository.room.HistoryEntity
 
 fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<SearchResult> {
     val searchResult = ArrayList<SearchResult>()

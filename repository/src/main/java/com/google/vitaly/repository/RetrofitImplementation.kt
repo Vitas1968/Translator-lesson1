@@ -1,10 +1,9 @@
-package geekbrains.ru.translator.model.datasource
+package com.google.vitaly.repository
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.google.vitaly.model.data.SearchResult
-import com.google.vitaly.repository.DataSource
-import geekbrains.ru.translator.model.data.api.ApiService
-import geekbrains.ru.translator.model.data.api.BaseInterceptor
+import com.google.vitaly.repository.api.ApiService
+import com.google.vitaly.repository.api.BaseInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

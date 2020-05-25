@@ -1,7 +1,6 @@
-package geekbrains.ru.translator.model.datasource
+package com.google.vitaly.repository
 
 import com.google.vitaly.model.data.DataModel
-import com.google.vitaly.repository.DataSource
 
 interface DataSourceLocal<T> : DataSource<T> {
 

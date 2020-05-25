@@ -3,8 +3,8 @@ package com.google.vitaly.historyscreen.view.history
 import com.anikin.aleksandr.simplevocabulary.viewmodel.Interactor
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult
-import geekbrains.ru.translator.model.repository.Repository
-import geekbrains.ru.translator.model.repository.RepositoryLocal
+import com.google.vitaly.repository.Repository
+import com.google.vitaly.repository.RepositoryLocal
 
 
 class HistoryInteractor(

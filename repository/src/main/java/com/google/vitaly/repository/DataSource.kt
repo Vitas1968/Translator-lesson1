@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.model.datasource
+package com.google.vitaly.repository
 
 
 interface DataSource<T> {

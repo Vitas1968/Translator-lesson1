@@ -1,11 +1,11 @@
-package geekbrains.ru.translator.room
+package com.google.vitaly.repository.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(indices = arrayOf(Index(value = arrayOf("word"), unique = true)))
+@Entity(indices = [Index(value = arrayOf("word"), unique = true)])
 class HistoryEntity(
     @field:PrimaryKey
     @field:ColumnInfo(name = "word")

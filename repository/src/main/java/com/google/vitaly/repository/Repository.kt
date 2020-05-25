@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.model.repository
+package com.google.vitaly.repository
 
 
 

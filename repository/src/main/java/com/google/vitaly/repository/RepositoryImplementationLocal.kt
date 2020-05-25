@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.model.repository
+package com.google.vitaly.repository
 
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult

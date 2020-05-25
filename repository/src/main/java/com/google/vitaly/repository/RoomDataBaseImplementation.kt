@@ -1,11 +1,9 @@
-package geekbrains.ru.translator.model.datasource
+package com.google.vitaly.repository
 
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult
-import geekbrains.ru.translator.room.HistoryDao
-import com.google.vitaly.historyscreen.convertDataModelSuccessToEntity
-import com.google.vitaly.historyscreen.mapHistoryEntityToSearchResult
-import com.google.vitaly.repository.DataSourceLocal
+import com.google.vitaly.repository.room.HistoryDao
+
 
 class RoomDataBaseImplementation(private val historyDao: HistoryDao) :
     DataSourceLocal<List<SearchResult>> {
@@ -20,7 +18,7 @@ class RoomDataBaseImplementation(private val historyDao: HistoryDao) :
     override suspend fun saveToDB(dataModel: DataModel) {
         convertDataModelSuccessToEntity(dataModel)
             ?.let {
-            historyDao.insert(it)
+                historyDao.insert(it)
         }
     }
 }
