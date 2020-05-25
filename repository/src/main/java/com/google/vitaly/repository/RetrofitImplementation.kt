@@ -2,6 +2,7 @@ package geekbrains.ru.translator.model.datasource
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.google.vitaly.model.data.SearchResult
+import com.google.vitaly.repository.DataSource
 import geekbrains.ru.translator.model.data.api.ApiService
 import geekbrains.ru.translator.model.data.api.BaseInterceptor
 import okhttp3.Interceptor
@@ -10,7 +11,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitImplementation : DataSource<List<SearchResult>> {
+class RetrofitImplementation :
+    DataSource<List<SearchResult>> {
 
     override suspend fun getData(word: String): List<SearchResult> {
         return getService(BaseInterceptor.interceptor).searchAsync(word).await()

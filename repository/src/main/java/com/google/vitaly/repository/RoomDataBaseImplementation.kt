@@ -5,6 +5,7 @@ import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.room.HistoryDao
 import com.google.vitaly.historyscreen.convertDataModelSuccessToEntity
 import com.google.vitaly.historyscreen.mapHistoryEntityToSearchResult
+import com.google.vitaly.repository.DataSourceLocal
 
 class RoomDataBaseImplementation(private val historyDao: HistoryDao) :
     DataSourceLocal<List<SearchResult>> {
