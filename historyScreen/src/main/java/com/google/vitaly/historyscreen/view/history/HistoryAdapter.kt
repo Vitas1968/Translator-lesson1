@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.view.history
+package com.google.vitaly.historyscreen.view.history
 
 import android.view.LayoutInflater
 import android.view.View

@@ -13,10 +13,10 @@ import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.utils.network.isOnline
 import geekbrains.ru.translator.view.base.BaseActivity
-import geekbrains.ru.translator.view.history.HistoryActivity
+import com.google.vitaly.historyscreen.view.history.HistoryActivity
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
 import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
-import geekbrains.ru.translator.utils.convertMeaningsToString
+import com.google.vitaly.historyscreen.convertMeaningsToString
 import geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -40,7 +40,9 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
                     DescriptionActivity.getIntent(
                         this@MainActivity,
                         data.text!!,
-                        convertMeaningsToString(data.meanings!!),
+                        convertMeaningsToString(
+                            data.meanings!!
+                        ),
                         data.meanings[0].imageUrl
                     )
                 )

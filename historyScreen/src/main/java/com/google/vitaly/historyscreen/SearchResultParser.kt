@@ -1,9 +1,9 @@
 package com.google.vitaly.historyscreen
 
 import com.google.vitaly.model.data.DataModel
-import geekbrains.ru.model.data.DataModel
-import geekbrains.ru.model.data.Meanings
-import geekbrains.ru.model.data.SearchResult
+import com.google.vitaly.model.data.Meanings
+import com.google.vitaly.model.data.SearchResult
+
 
 fun parseLocalSearchResults(data: DataModel): DataModel {
     return DataModel.Success(mapResult(data, false))
@@ -46,7 +46,7 @@ private fun parseOnlineResult(searchResult: SearchResult, newSearchResults: Arra
         val newMeanings = arrayListOf<Meanings>()
         for (meaning in searchResult.meanings!!) {
             if (meaning.translation != null && !meaning.translation!!.translation.isNullOrBlank()) {
-                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
+                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl,meaning.previewUrl))
             }
         }
         if (newMeanings.isNotEmpty()) {

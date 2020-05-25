@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
 import com.google.vitaly.model.data.SearchResult
-import geekbrains.ru.translator.utils.convertMeaningsToString
+import com.google.vitaly.historyscreen.convertMeaningsToString
 import geekbrains.ru.translator.view.main.MainActivity
 import geekbrains.ru.translator.view.main.image_loader.GlideImageLoader
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.description_textview_recycler_item
@@ -75,7 +75,10 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
                     }
                     data.meanings?.get(0)?.previewUrl?.let{
                         glideImageLoader?.loadInto("https:$it",image_view)}
-                    description_textview_recycler_item.text = convertMeaningsToString(data.meanings!!)
+                    description_textview_recycler_item.text =
+                        convertMeaningsToString(
+                            data.meanings!!
+                        )
                     setOnClickListener { openInNewWindow(data) }
                 }
             }

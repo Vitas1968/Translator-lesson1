@@ -1,8 +1,9 @@
-package geekbrains.ru.translator.view.history
+package com.google.vitaly.historyscreen.view.history
 
 import androidx.lifecycle.LiveData
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.historyscreen.parseLocalSearchResults
+import com.google.vitaly.historyscreen.view.history.HistoryInteractor
 import geekbrains.ru.translator.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
 

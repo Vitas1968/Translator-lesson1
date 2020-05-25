@@ -9,8 +9,8 @@ import geekbrains.ru.translator.model.repository.RepositoryImplementation
 import geekbrains.ru.translator.model.repository.RepositoryImplementationLocal
 import geekbrains.ru.translator.model.repository.RepositoryLocal
 import geekbrains.ru.translator.room.HistoryDataBase
-import geekbrains.ru.translator.view.history.HistoryInteractor
-import geekbrains.ru.translator.view.history.HistoryViewModel
+import com.google.vitaly.historyscreen.view.history.HistoryInteractor
+import com.google.vitaly.historyscreen.view.history.HistoryViewModel
 import geekbrains.ru.translator.view.main.MainInteractor
 import geekbrains.ru.translator.view.main.MainViewModel
 import org.koin.dsl.module
@@ -30,5 +30,10 @@ val mainScreen = module {
 
 val historyScreen = module {
     factory { HistoryViewModel(get()) }
-    factory { HistoryInteractor(get(), get()) }
+    factory {
+        HistoryInteractor(
+            get(),
+            get()
+        )
+    }
 }

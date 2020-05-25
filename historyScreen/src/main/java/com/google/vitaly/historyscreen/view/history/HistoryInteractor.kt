@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.view.history
+package com.google.vitaly.historyscreen.view.history
 
 import com.anikin.aleksandr.simplevocabulary.viewmodel.Interactor
 import com.google.vitaly.model.data.DataModel
