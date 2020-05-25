@@ -1,7 +1,7 @@
 package geekbrains.ru.translator.model.repository
 
-import geekbrains.ru.translator.model.data.DataModel
-import geekbrains.ru.translator.model.data.SearchResult
+import com.google.vitaly.model.data.DataModel
+import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.model.datasource.DataSourceLocal
 
 class RepositoryImplementationLocal(private val dataSource: DataSourceLocal<List<SearchResult>>) :

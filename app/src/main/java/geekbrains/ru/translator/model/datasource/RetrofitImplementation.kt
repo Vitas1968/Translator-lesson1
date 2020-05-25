@@ -1,7 +1,7 @@
 package geekbrains.ru.translator.model.datasource
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import geekbrains.ru.translator.model.data.SearchResult
+import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.model.data.api.ApiService
 import geekbrains.ru.translator.model.data.api.BaseInterceptor
 import okhttp3.Interceptor

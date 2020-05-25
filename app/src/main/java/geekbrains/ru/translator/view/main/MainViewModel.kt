@@ -1,7 +1,7 @@
 package geekbrains.ru.translator.view.main
 
 import androidx.lifecycle.LiveData
-import geekbrains.ru.translator.model.data.DataModel
+import com.google.vitaly.model.data.DataModel
 import geekbrains.ru.translator.utils.parseOnlineSearchResults
 import geekbrains.ru.translator.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers

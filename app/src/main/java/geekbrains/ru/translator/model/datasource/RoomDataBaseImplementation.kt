@@ -1,7 +1,7 @@
 package geekbrains.ru.translator.model.datasource
 
-import geekbrains.ru.translator.model.data.DataModel
-import geekbrains.ru.translator.model.data.SearchResult
+import com.google.vitaly.model.data.DataModel
+import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.room.HistoryDao
 import geekbrains.ru.translator.utils.convertDataModelSuccessToEntity
 import geekbrains.ru.translator.utils.mapHistoryEntityToSearchResult

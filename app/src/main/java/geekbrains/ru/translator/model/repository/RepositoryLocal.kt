@@ -1,6 +1,6 @@
 package geekbrains.ru.translator.model.repository
 
-import geekbrains.ru.translator.model.data.DataModel
+import com.google.vitaly.model.data.DataModel
 
 interface RepositoryLocal<T> : Repository<T> {
 
