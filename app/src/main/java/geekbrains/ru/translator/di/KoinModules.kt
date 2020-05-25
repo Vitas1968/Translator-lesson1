@@ -10,6 +10,7 @@ import com.google.vitaly.repository.RepositoryImplementationLocal
 import com.google.vitaly.repository.RepositoryLocal
 import com.google.vitaly.historyscreen.view.history.HistoryInteractor
 import com.google.vitaly.historyscreen.view.history.HistoryViewModel
+import com.google.vitaly.repository.room.HistoryDataBase
 import geekbrains.ru.translator.view.main.MainInteractor
 import geekbrains.ru.translator.view.main.MainViewModel
 import org.koin.dsl.module

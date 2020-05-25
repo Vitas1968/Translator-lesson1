@@ -5,12 +5,11 @@ import android.os.PersistableBundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.anikin.aleksandr.simplevocabulary.viewmodel.Interactor
-import geekbrains.ru.translator.R
+import com.google.vitaly.core.viewmodel.BaseViewModel
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult
-import geekbrains.ru.translator.utils.network.isOnline
+import com.google.vitaly.utils.network.isOnline
 import geekbrains.ru.translator.utils.ui.AlertDialogFragment
-import geekbrains.ru.translator.viewmodel.BaseViewModel
 import kotlinx.android.synthetic.main.loading_layout.*
 
 
@@ -54,7 +53,7 @@ abstract class BaseActivity<T : DataModel, I : Interactor<T>> : AppCompatActivit
                 if (dataModel.progress != null) {
                     progress_bar_horizontal.visibility = View.VISIBLE
                     progress_bar_round.visibility = View.GONE
-                    progress_bar_horizontal.progress = dataModel.progress
+                    progress_bar_horizontal.progress = dataModel.progress!!
                 } else {
                     progress_bar_horizontal.visibility = View.GONE
                     progress_bar_round.visibility = View.VISIBLE
