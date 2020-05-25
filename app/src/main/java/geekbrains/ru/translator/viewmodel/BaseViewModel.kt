@@ -2,7 +2,7 @@ package geekbrains.ru.translator.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import geekbrains.ru.translator.model.data.DataModel
+import com.google.vitaly.model.data.DataModel
 import kotlinx.coroutines.*
 
 abstract class BaseViewModel<T : DataModel>(
