@@ -1,7 +1,7 @@
 package geekbrains.ru.translator.di
 
 import androidx.room.Room
-import geekbrains.ru.translator.model.data.SearchResult
+import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.model.datasource.RetrofitImplementation
 import geekbrains.ru.translator.model.datasource.RoomDataBaseImplementation
 import geekbrains.ru.translator.model.repository.Repository
@@ -13,7 +13,6 @@ import geekbrains.ru.translator.view.history.HistoryInteractor
 import geekbrains.ru.translator.view.history.HistoryViewModel
 import geekbrains.ru.translator.view.main.MainInteractor
 import geekbrains.ru.translator.view.main.MainViewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val application = module {

@@ -1,6 +1,6 @@
 package com.anikin.aleksandr.simplevocabulary.viewmodel
 
-import geekbrains.ru.translator.model.data.DataModel
+import com.google.vitaly.model.data.DataModel
 
 interface Interactor<T> {
     suspend fun getData(word: String, fromRemoteSource: Boolean): DataModel

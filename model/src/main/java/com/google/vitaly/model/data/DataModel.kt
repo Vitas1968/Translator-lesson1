@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.model.data
+package com.google.vitaly.model.data
 
 sealed class DataModel {
 

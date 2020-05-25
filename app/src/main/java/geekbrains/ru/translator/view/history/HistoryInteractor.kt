@@ -1,8 +1,8 @@
 package geekbrains.ru.translator.view.history
 
 import com.anikin.aleksandr.simplevocabulary.viewmodel.Interactor
-import geekbrains.ru.translator.model.data.DataModel
-import geekbrains.ru.translator.model.data.SearchResult
+import com.google.vitaly.model.data.DataModel
+import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.model.repository.Repository
 import geekbrains.ru.translator.model.repository.RepositoryLocal
 

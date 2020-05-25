@@ -9,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
-import geekbrains.ru.translator.model.data.DataModel
-import geekbrains.ru.translator.model.data.SearchResult
+import com.google.vitaly.model.data.DataModel
+import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.utils.network.isOnline
 import geekbrains.ru.translator.view.base.BaseActivity
 import geekbrains.ru.translator.view.history.HistoryActivity

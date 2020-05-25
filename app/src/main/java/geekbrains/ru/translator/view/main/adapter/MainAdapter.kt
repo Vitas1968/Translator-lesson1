@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import geekbrains.ru.translator.R
-import geekbrains.ru.translator.model.data.SearchResult
+import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.utils.convertMeaningsToString
 import geekbrains.ru.translator.view.main.MainActivity
 import geekbrains.ru.translator.view.main.image_loader.GlideImageLoader

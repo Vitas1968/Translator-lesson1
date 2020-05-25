@@ -3,8 +3,8 @@ package geekbrains.ru.translator.view.history
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import geekbrains.ru.translator.R
-import geekbrains.ru.translator.model.data.DataModel
-import geekbrains.ru.translator.model.data.SearchResult
+import com.google.vitaly.model.data.DataModel
+import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.view.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_history.*
 import org.koin.android.viewmodel.ext.android.viewModel
