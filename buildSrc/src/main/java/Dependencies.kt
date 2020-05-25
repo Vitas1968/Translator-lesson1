@@ -27,6 +27,7 @@ object Versions {
     //Design
     const val appcompat = "1.1.0-rc01"
     const val material = "1.0.0"
+    const val swiperefreshlayout = "1.0.0"
 
     //Kotlin
     const val core = "1.0.2"
@@ -70,6 +71,7 @@ object Tools {
 object Design {
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
     const val material = "com.google.android.material:material:${Versions.material}"
+    const val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swiperefreshlayout}"
 }
 
 object Kotlin {
