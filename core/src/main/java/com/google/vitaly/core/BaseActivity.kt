@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.view.base
+package com.google.vitaly.core
 
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -75,7 +75,9 @@ abstract class BaseActivity<T : DataModel, I : Interactor<T>> : AppCompatActivit
     }
 
     protected fun showAlertDialog(title: String?, message: String?) {
-        AlertDialogFragment.newInstance(title, message).show(supportFragmentManager, DIALOG_FRAGMENT_TAG)
+        AlertDialogFragment.newInstance(title, message).show(supportFragmentManager,
+            DIALOG_FRAGMENT_TAG
+        )
     }
 
     private fun showViewWorking() {

@@ -12,17 +12,15 @@ import geekbrains.ru.translator.R
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult
 import geekbrains.ru.translator.utils.network.isOnline
-import geekbrains.ru.translator.view.base.BaseActivity
+import com.google.vitaly.core.BaseActivity
 import com.google.vitaly.historyscreen.view.history.HistoryActivity
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
 import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
 import com.google.vitaly.historyscreen.convertMeaningsToString
 import geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
-class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListener {
+class MainActivity : com.google.vitaly.core.BaseActivity<DataModel, MainInteractor>(),OnStartDragListener {
     override lateinit var model: MainViewModel
     private lateinit var itemTouchHelper: ItemTouchHelper
 

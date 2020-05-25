@@ -1,9 +1,8 @@
-package geekbrains.ru.translator.viewmodel
+package com.google.vitaly.core.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.vitaly.model.data.DataModel
-import kotlinx.coroutines.*
 
 abstract class BaseViewModel<T : DataModel>(
     protected open val _mutableLiveData: MutableLiveData<T> = MutableLiveData()
