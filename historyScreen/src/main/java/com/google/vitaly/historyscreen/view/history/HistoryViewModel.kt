@@ -2,7 +2,7 @@ package geekbrains.ru.translator.view.history
 
 import androidx.lifecycle.LiveData
 import com.google.vitaly.model.data.DataModel
-import geekbrains.ru.translator.utils.parseLocalSearchResults
+import com.google.vitaly.historyscreen.parseLocalSearchResults
 import geekbrains.ru.translator.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -22,7 +22,11 @@ class HistoryViewModel(private val interactor: HistoryInteractor) :
     }
 
     private suspend fun startInteractor(word: String, isOnline: Boolean) {
-        _mutableLiveData.postValue(parseLocalSearchResults(interactor.getData(word, isOnline)))
+        _mutableLiveData.postValue(
+            parseLocalSearchResults(
+                interactor.getData(word, isOnline)
+            )
+        )
     }
 
     override fun handleError(error: Throwable) {
