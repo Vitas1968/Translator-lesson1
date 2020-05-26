@@ -1,7 +1,7 @@
-package geekbrains.ru.history
+package com.google.vitaly.historyscreen
 
-import geekbrains.ru.history.view.history.HistoryInteractor
-import geekbrains.ru.history.view.history.HistoryViewModel
+import com.google.vitaly.historyscreen.view.history.HistoryInteractor
+import com.google.vitaly.historyscreen.view.history.HistoryViewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 
