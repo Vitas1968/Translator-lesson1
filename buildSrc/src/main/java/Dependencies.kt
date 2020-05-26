@@ -48,6 +48,9 @@ object Versions {
     const val koinAndroid = "2.0.1"
     const val koinViewModel = "2.0.1"
 
+    //Google Play
+    const val googlePlayCore = "1.6.3"
+
     //Glide
     const val glide = "4.9.0"
     const val glideCompiler = "4.9.0"
@@ -75,6 +78,10 @@ object Design {
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
     const val material = "com.google.android.material:material:${Versions.material}"
     const val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swiperefreshlayout}"
+}
+
+object GooglePlay {
+    const val googlePlayCore = "com.google.android.play:core:${Versions.googlePlayCore}"
 }
 
 object Kotlin {
