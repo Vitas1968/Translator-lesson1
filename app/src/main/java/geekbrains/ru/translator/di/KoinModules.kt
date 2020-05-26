@@ -8,26 +8,23 @@ import com.google.vitaly.repository.Repository
 import com.google.vitaly.repository.RepositoryImplementation
 import com.google.vitaly.repository.RepositoryImplementationLocal
 import com.google.vitaly.repository.RepositoryLocal
-import com.google.vitaly.historyscreen.view.history.HistoryInteractor
-import com.google.vitaly.historyscreen.view.history.HistoryViewModel
 import com.google.vitaly.repository.room.HistoryDataBase
 import geekbrains.ru.translator.view.main.MainInteractor
 import geekbrains.ru.translator.view.main.MainViewModel
+import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
+
+
+fun injectDependencies() = loadModules
+private val loadModules by lazy {
+    loadKoinModules(listOf(application, mainScreen))
+}
 
 val application = module {
     single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
     single { get<HistoryDataBase>().historyDao() }
-    single<Repository<List<SearchResult>>> {
-        RepositoryImplementation(
-            RetrofitImplementation()
-        )
-    }
-    single<RepositoryLocal<List<SearchResult>>> {
-        RepositoryImplementationLocal(
-            RoomDataBaseImplementation(get())
-        )
-    }
+    single<Repository<List<SearchResult>>> { RepositoryImplementation(RetrofitImplementation()) }
+    single<RepositoryLocal<List<SearchResult>>> { RepositoryImplementationLocal(RoomDataBaseImplementation(get())) }
 }
 
 val mainScreen = module {
@@ -35,12 +32,3 @@ val mainScreen = module {
     factory { MainInteractor(get(), get()) }
 }
 
-val historyScreen = module {
-    factory { HistoryViewModel(get()) }
-    factory {
-        HistoryInteractor(
-            get(),
-            get()
-        )
-    }
-}
