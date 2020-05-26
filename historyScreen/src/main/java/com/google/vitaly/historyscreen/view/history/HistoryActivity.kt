@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.google.vitaly.core.BaseActivity
 import com.google.vitaly.historyscreen.R
+import com.google.vitaly.historyscreen.injectDependencies
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult
 import kotlinx.android.synthetic.main.activity_history.*
@@ -31,9 +32,8 @@ class HistoryActivity : BaseActivity<DataModel, HistoryInteractor>() {
     }
 
     private fun iniViewModel() {
-        if (history_activity_recyclerview.adapter != null) {
-            throw IllegalStateException("The ViewModel should be initialised first")
-        }
+        check(history_activity_recyclerview.adapter == null) { "The ViewModel should be initialised first" }
+        injectDependencies()
         val viewModel: HistoryViewModel by viewModel()
         model = viewModel
         model.subscribe().observe(this@HistoryActivity, Observer<DataModel> { renderData(it) })
