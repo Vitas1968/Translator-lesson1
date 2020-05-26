@@ -23,13 +23,14 @@ android {
         sourceCompatibility Config.java_version
         targetCompatibility Config.java_version
     }
+    dynamicFeatures = [Modules.historyScreen]
 }
 
 dependencies {
     //Modules
     implementation project(Modules.model)
     implementation project(Modules.core)
-    implementation project(Modules.historyScreen) //Feature
+   // implementation project(Modules.historyScreen) //Feature
 
     implementation project(Modules.repository)
     implementation project(Modules.utils)
@@ -52,6 +53,9 @@ dependencies {
     //Koin for Android
     implementation Koin.koin_android
     implementation Koin.koin_view_model
+
+    //Google Play libraries
+    implementation GooglePlay.googlePlayCore
 
     //Room
     implementation Room.runtime
