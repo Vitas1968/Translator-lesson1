@@ -76,7 +76,7 @@ class MainActivity : com.google.vitaly.core.BaseActivity<DataModel, MainInteract
             }
         }
 
-    private val stateUpdatedListener: InstallStateUpdatedListener =
+    private val stateUpdatedListener =
         InstallStateUpdatedListener { state ->
             state?.let {
                 if (it.installStatus() == InstallStatus.DOWNLOADED) {
