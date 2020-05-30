@@ -9,9 +9,12 @@ import com.google.vitaly.repository.RepositoryImplementation
 import com.google.vitaly.repository.RepositoryImplementationLocal
 import com.google.vitaly.repository.RepositoryLocal
 import com.google.vitaly.repository.room.HistoryDataBase
+import geekbrains.ru.translator.view.main.MainActivity
 import geekbrains.ru.translator.view.main.MainInteractor
 import geekbrains.ru.translator.view.main.MainViewModel
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 
@@ -28,7 +31,13 @@ val application = module {
 }
 
 val mainScreen = module {
-    factory { MainViewModel(get()) }
-    factory { MainInteractor(get(), get()) }
+    scope(named<MainActivity>()) {
+        scoped {
+            MainInteractor(get(), get()) }
+        viewModel {
+            MainViewModel(get()) }
+    }
 }
+
+
 
