@@ -30,6 +30,7 @@ import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
 import geekbrains.ru.translator.utils.convertMeaningsToString
 import geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
@@ -210,7 +211,7 @@ class MainActivity : com.google.vitaly.core.BaseActivity<DataModel, MainInteract
     private fun iniViewModel() {
         check(main_activity_recyclerview.adapter == null) { "The ViewModel should be initialised first" }
         injectDependencies()
-        val viewModel: MainViewModel by viewModel()
+        val viewModel: MainViewModel by currentScope.inject()
         model = viewModel
         model.subscribe().observe(this@MainActivity, Observer<DataModel> { renderData(it) })
     }
