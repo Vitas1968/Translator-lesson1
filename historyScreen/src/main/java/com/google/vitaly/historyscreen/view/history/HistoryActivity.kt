@@ -8,6 +8,7 @@ import com.google.vitaly.historyscreen.injectDependencies
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult
 import kotlinx.android.synthetic.main.activity_history.*
+import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HistoryActivity : BaseActivity<DataModel, HistoryInteractor>() {
@@ -34,7 +35,7 @@ class HistoryActivity : BaseActivity<DataModel, HistoryInteractor>() {
     private fun iniViewModel() {
         check(history_activity_recyclerview.adapter == null) { "The ViewModel should be initialised first" }
         injectDependencies()
-        val viewModel: HistoryViewModel by viewModel()
+        val viewModel: HistoryViewModel by currentScope.inject()
         model = viewModel
         model.subscribe().observe(this@HistoryActivity, Observer<DataModel> { renderData(it) })
     }
