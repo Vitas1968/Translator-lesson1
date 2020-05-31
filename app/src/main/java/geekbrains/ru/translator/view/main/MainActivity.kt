@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -19,10 +20,12 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
+import com.google.vitaly.core.BaseActivity
 
 import com.google.vitaly.model.data.DataModel
 import com.google.vitaly.model.data.SearchResult
 import com.google.vitaly.utils.network.isOnline
+import com.google.vitaly.utils.ui.viewById
 import geekbrains.ru.translator.R
 import geekbrains.ru.translator.di.injectDependencies
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
@@ -31,17 +34,18 @@ import geekbrains.ru.translator.utils.convertMeaningsToString
 import geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.scope.currentScope
-import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 private const val HISTORY_ACTIVITY_PATH = "com.google.vitaly.historyscreen.view.history.HistoryActivity"
 private const val HISTORY_ACTIVITY_FEATURE_NAME = "historyScreen"
 private const val REQUEST_CODE = 98
-class MainActivity : com.google.vitaly.core.BaseActivity<DataModel, MainInteractor>(),OnStartDragListener {
+class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListener {
     override lateinit var model: MainViewModel
     private lateinit var splitInstallManager: SplitInstallManager
     private lateinit var appUpdateManager: AppUpdateManager
     private lateinit var itemTouchHelper: ItemTouchHelper
+    private val mainActivityRecyclerView by viewById<RecyclerView>(R.id.main_activity_recyclerview)
+    private val searchFAB by viewById<FloatingActionButton>(R.id.search_fab)
 
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener,this@MainActivity) }
     private val fabClickListener: View.OnClickListener =
@@ -217,8 +221,8 @@ class MainActivity : com.google.vitaly.core.BaseActivity<DataModel, MainInteract
     }
 
     private fun initViews() {
-        search_fab.setOnClickListener(fabClickListener)
-        main_activity_recyclerview.adapter = adapter
+        searchFAB.setOnClickListener(fabClickListener)
+        mainActivityRecyclerView.adapter = adapter
 
     }
 
