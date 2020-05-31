@@ -1,4 +1,4 @@
-package geekbrains.ru.utils.ui
+package com.google.vitaly.utils.ui
 
 import android.app.Activity
 import android.view.View
