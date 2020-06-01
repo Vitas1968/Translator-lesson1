@@ -1,13 +1,14 @@
 package geekbrains.ru.translator.view.main
 
 import androidx.lifecycle.LiveData
+import com.google.vitaly.core.viewmodel.BaseViewModel
 import com.google.vitaly.model.data.DataModel
 import geekbrains.ru.translator.utils.parseOnlineSearchResults
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel(private val interactor: MainInteractor) : com.google.vitaly.core.viewmodel.BaseViewModel<DataModel>() {
+class MainViewModel(private val interactor: MainInteractor) : BaseViewModel<DataModel>() {
     private val liveDataForViewToObserve: LiveData<DataModel> = _mutableLiveData
 
     fun subscribe(): LiveData<DataModel> {
