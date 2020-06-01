@@ -1,14 +1,12 @@
 package com.google.vitaly.repository
 
 import com.google.vitaly.model.data.DataModel
-import com.google.vitaly.model.data.SearchResult
-import com.google.vitaly.repository.DataSourceLocal
-import com.google.vitaly.repository.RepositoryLocal
+import com.google.vitaly.model.data.dto.SearchResultDto
 
-class RepositoryImplementationLocal(private val dataSource: DataSourceLocal<List<SearchResult>>) :
-    RepositoryLocal<List<SearchResult>> {
+class RepositoryImplementationLocal(private val dataSource: DataSourceLocal<List<SearchResultDto>>) :
+    RepositoryLocal<List<SearchResultDto>> {
 
-    override suspend fun getData(word: String): List<SearchResult> {
+    override suspend fun getData(word: String): List<SearchResultDto> {
         return dataSource.getData(word)
     }
 
