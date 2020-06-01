@@ -1,1 +1,6 @@
 include ':app'
+include ':model'
+include ':historyScreen'
+include ':core'
+include ':utils'
+include ':repository'

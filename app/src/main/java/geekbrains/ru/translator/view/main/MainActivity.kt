@@ -1,114 +1,231 @@
 package geekbrains.ru.translator.view.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.splitinstall.SplitInstallManager
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+import com.google.android.play.core.splitinstall.SplitInstallRequest
+import com.google.vitaly.core.BaseActivity
 
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.vitaly.model.data.DataModel
+import com.google.vitaly.model.data.userdata.Result
+import com.google.vitaly.utils.ui.viewById
 import geekbrains.ru.translator.R
-import geekbrains.ru.translator.model.data.DataModel
-import geekbrains.ru.translator.model.data.SearchResult
-import geekbrains.ru.translator.presenter.Presenter
-import geekbrains.ru.translator.view.base.BaseActivity
-import geekbrains.ru.translator.view.base.View
-import geekbrains.ru.translator.view.main.adapter.ItemTouchHelperAdapter
+import geekbrains.ru.translator.di.injectDependencies
+import geekbrains.ru.translator.utils.convertMeaningsToSingleString
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
-import kotlinx.android.synthetic.main.activity_main.*
+import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
+import geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity
 
-class MainActivity : BaseActivity<DataModel>() {
+import org.koin.android.scope.currentScope
 
-    private var adapter: MainAdapter? = null
+private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
+private const val HISTORY_ACTIVITY_PATH = "com.google.vitaly.historyscreen.view.history.HistoryActivity"
+private const val HISTORY_ACTIVITY_FEATURE_NAME = "historyScreen"
+private const val REQUEST_CODE = 98
+class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListener {
+    override val layoutRes = R.layout.activity_main
+    override lateinit var model: MainViewModel
+    private lateinit var splitInstallManager: SplitInstallManager
+    private lateinit var appUpdateManager: AppUpdateManager
+    private lateinit var itemTouchHelper: ItemTouchHelper
+    private val mainActivityRecyclerView by viewById<RecyclerView>(R.id.main_activity_recyclerview)
+    private val searchFAB by viewById<FloatingActionButton>(R.id.search_fab)
+
+    private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener,this@MainActivity) }
+    private val fabClickListener: View.OnClickListener =
+        View.OnClickListener {
+            val searchDialogFragment = SearchDialogFragment.newInstance()
+            searchDialogFragment.setOnSearchClickListener(onSearchClickListener)
+            searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
+        }
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
-            override fun onItemClick(data: SearchResult) {
-                Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
+            override fun onItemClick(data: Result) {
+                startActivity(
+                    DescriptionActivity.getIntent(
+                        this@MainActivity,
+                        data.text!!,
+                        convertMeaningsToSingleString(
+                            data.meanings!!
+                        ),
+                        data.meanings!![0].imageUrl
+                    )
+                )
+            }
+        }
+    private val onSearchClickListener: SearchDialogFragment.OnSearchClickListener =
+        object : SearchDialogFragment.OnSearchClickListener {
+            override fun onClick(searchWord: String) {
+                if (isNetworkAvailable) {
+                    model.getData(searchWord, isNetworkAvailable)
+                } else {
+                    showNoInternetConnectionDialog()
+                }
             }
         }
 
-    override fun createPresenter(): Presenter<DataModel, View> {
-        return MainPresenterImpl()
-    }
+    private val stateUpdatedListener =
+        InstallStateUpdatedListener { state ->
+            state?.let {
+                if (it.installStatus() == InstallStatus.DOWNLOADED) {
+                    popupSnackbarForCompleteUpdate()
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        search_fab.setOnClickListener {
-            val searchDialogFragment = SearchDialogFragment.newInstance()
-            searchDialogFragment.setOnSearchClickListener(object : SearchDialogFragment.OnSearchClickListener {
-                override fun onClick(searchWord: String) {
-                    presenter.getData(searchWord, true)
+        iniViewModel()
+        initViews()
+        itemTouchHelper = getItemTochHelper()
+        checkForUpdates()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        appUpdateManager
+            .appUpdateInfo
+            .addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                    popupSnackbarForCompleteUpdate()
                 }
-            })
-            searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
+                if (appUpdateInfo.updateAvailability()
+                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+                ) {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.IMMEDIATE,
+                        this,
+                        REQUEST_CODE
+                    )
+                }
+            }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                appUpdateManager.unregisterListener(stateUpdatedListener)
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    "Update flow failed! Result code: $resultCode",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
-    override fun renderData(dataModel: DataModel) {
-        when (dataModel) {
-            is DataModel.Success -> {
-                val searchResult = dataModel.data
-                if (searchResult == null || searchResult.isEmpty()) {
-                    showErrorScreen(getString(R.string.empty_server_response_on_success))
-                } else {
-                    showViewSuccess()
-                    if (adapter == null) {
-                        main_activity_recyclerview.layoutManager = LinearLayoutManager(applicationContext)
-                        main_activity_recyclerview.adapter = MainAdapter(onListItemClickListener, searchResult)
-                        MyItemTouchHelper(adapter).run {
-                            ItemTouchHelper(this)
-                        }.attachToRecyclerView(main_activity_recyclerview)
+    private fun getItemTochHelper()=
+        adapter
+            .run {
+                MyItemTouchHelper(this)
+            }
+            .run {
+                ItemTouchHelper(this)
+            }
+            .apply {
+                attachToRecyclerView(mainActivityRecyclerView)
+            }
 
-                    } else {
-                        adapter!!.setData(searchResult)
+    override fun setDataToAdapter(data: List<Result>) {
+        adapter.setData(data)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.history_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_history -> {
+                splitInstallManager = SplitInstallManagerFactory.create(applicationContext)
+                val request =
+                    SplitInstallRequest
+                        .newBuilder()
+                        .addModule(HISTORY_ACTIVITY_FEATURE_NAME)
+                        .build()
+                splitInstallManager
+                    .startInstall(request)
+                    .addOnSuccessListener {
+                        val intent = Intent().setClassName(packageName, HISTORY_ACTIVITY_PATH)
+                        startActivity(intent)
                     }
-                }
+                    .addOnFailureListener {
+                        Toast.makeText(
+                            applicationContext,
+                            "Couldn't download feature: " + it.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                true
             }
-            is DataModel.Loading -> {
-                showViewLoading()
-                if (dataModel.progress != null) {
-                    progress_bar_horizontal.visibility = VISIBLE
-                    progress_bar_round.visibility = GONE
-                    progress_bar_horizontal.progress = dataModel.progress
-                } else {
-                    progress_bar_horizontal.visibility = GONE
-                    progress_bar_round.visibility = VISIBLE
-                }
-            }
-            is DataModel.Error -> {
-                showErrorScreen(dataModel.error.message)
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun checkForUpdates() {
+        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateIntent ->
+            if (appUpdateIntent.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateIntent.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.registerListener(stateUpdatedListener)
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateIntent,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    REQUEST_CODE
+                )
             }
         }
     }
 
-    private fun showErrorScreen(error: String?) {
-        showViewError()
-        error_textview.text = error ?: getString(R.string.undefined_error)
-        reload_button.setOnClickListener {
-            presenter.getData("hi", true)
+    private fun popupSnackbarForCompleteUpdate() {
+        Snackbar.make(
+            findViewById(R.id.activity_main_layout),
+            "An update has just been downloaded.",
+            Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            setAction("RESTART") { appUpdateManager.completeUpdate() }
+            show()
         }
     }
 
-    private fun showViewSuccess() {
-        success_linear_layout.visibility = VISIBLE
-        loading_frame_layout.visibility = GONE
-        error_linear_layout.visibility = GONE
+    private fun iniViewModel() {
+        check(mainActivityRecyclerView.adapter == null) { "The ViewModel should be initialised first" }
+        injectDependencies()
+        val viewModel: MainViewModel by currentScope.inject()
+        model = viewModel
+        model.subscribe().observe(this@MainActivity, Observer<DataModel> { renderData(it) })
     }
 
-    private fun showViewLoading() {
-        success_linear_layout.visibility = GONE
-        loading_frame_layout.visibility = VISIBLE
-        error_linear_layout.visibility = GONE
+    private fun initViews() {
+        searchFAB.setOnClickListener(fabClickListener)
+        mainActivityRecyclerView.adapter = adapter
+
     }
 
-    private fun showViewError() {
-        success_linear_layout.visibility = GONE
-        loading_frame_layout.visibility = GONE
-        error_linear_layout.visibility = VISIBLE
-    }
-
-    companion object {
-        private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
+    override fun onStartDrag(viewHolder: RecyclerView.ViewHolder?) {
+        viewHolder?.let { itemTouchHelper.startDrag(it)}
     }
 }
