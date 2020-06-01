@@ -1,14 +1,14 @@
 package com.google.vitaly.repository
 
 import com.google.vitaly.model.data.DataModel
-import com.google.vitaly.model.data.SearchResult
+import com.google.vitaly.model.data.dto.SearchResultDto
 import com.google.vitaly.repository.room.HistoryEntity
 
-fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<SearchResult> {
-    val searchResult = ArrayList<SearchResult>()
+fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<SearchResultDto> {
+    val searchResult = ArrayList<SearchResultDto>()
     if (!list.isNullOrEmpty()) {
         for (entity in list) {
-            searchResult.add(SearchResult(entity.word, null))
+            searchResult.add(SearchResultDto(entity.word, null))
         }
     }
     return searchResult
