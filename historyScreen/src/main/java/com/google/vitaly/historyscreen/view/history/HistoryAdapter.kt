@@ -1,19 +1,19 @@
 package com.google.vitaly.historyscreen.view.history
 
+import com.google.vitaly.model.data.userdata.Result
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.vitaly.historyscreen.R
-import com.google.vitaly.model.data.SearchResult
 import kotlinx.android.synthetic.main.activity_history_recyclerview_item.view.*
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder>() {
 
-    private var data: List<SearchResult> = arrayListOf()
+    private var data: List<com.google.vitaly.model.data.userdata.Result> = arrayListOf()
 
-    fun setData(data: List<SearchResult>) {
+    fun setData(data: List<Result>) {
         this.data = data
         notifyDataSetChanged()
     }
@@ -35,7 +35,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolde
 
     inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(data: SearchResult) {
+        fun bind(data: Result) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 itemView.header_history_textview_recycler_item.text = data.text
                 itemView.setOnClickListener {
