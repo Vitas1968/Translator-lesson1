@@ -6,9 +6,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.vitaly.model.data.userdata.Result
 import geekbrains.ru.translator.R
-import com.google.vitaly.model.data.SearchResult
-import geekbrains.ru.translator.utils.convertMeaningsToString
+import geekbrains.ru.translator.utils.convertMeaningsToSingleString
 import geekbrains.ru.translator.view.main.MainActivity
 import geekbrains.ru.translator.view.main.image_loader.GlideImageLoader
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.description_textview_recycler_item
@@ -17,10 +17,10 @@ import kotlinx.android.synthetic.main.item_card_view_image.view.*
 
 class MainAdapter(private var onListItemClickListener: OnListItemClickListener, private val mainActivity: MainActivity) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>(),ItemTouchHelperAdapter {
-    private var data=mutableListOf<SearchResult>()
+    private var data=mutableListOf<Result>()
     private val glideImageLoader=GlideImageLoader()
 
-    fun setData(dataListSearchResult: List<SearchResult>) {
+    fun setData(dataListSearchResult: List<Result>) {
         data.addAll(dataListSearchResult)
         notifyDataSetChanged()
     }
@@ -50,18 +50,18 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
 
     override fun getItemCount()=data.size
 
-    private fun openInNewWindow(listItemData: SearchResult) {
+    private fun openInNewWindow(listItemData: Result) {
         onListItemClickListener.onItemClick(listItemData)
     }
 
     interface OnListItemClickListener {
-        fun onItemClick(data: SearchResult)
+        fun onItemClick(data: Result)
     }
 
     inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view)/*,
         ItemTouchHelperViewHolder*/ {
 
-        fun bind(data: SearchResult) {
+        fun bind(data: Result) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 itemView.apply {
                     header_textview_recycler_item.apply {
@@ -76,9 +76,7 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
                     data.meanings?.get(0)?.previewUrl?.let{
                         glideImageLoader?.loadInto("https:$it",image_view)}
                     description_textview_recycler_item.text =
-                        convertMeaningsToString(
-                            data.meanings!!
-                        )
+                        convertMeaningsToSingleString(data.meanings!!)
                     setOnClickListener { openInNewWindow(data) }
                 }
             }
