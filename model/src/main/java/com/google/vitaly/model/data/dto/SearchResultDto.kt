@@ -1,4 +1,4 @@
-package geekbrains.ru.model.data.dto
+package com.google.vitaly.model.data.dto
 
 import com.google.gson.annotations.SerializedName
 
