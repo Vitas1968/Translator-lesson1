@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -23,16 +24,15 @@ import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.vitaly.core.BaseActivity
 
 import com.google.vitaly.model.data.DataModel
-import com.google.vitaly.model.data.SearchResult
-import com.google.vitaly.utils.network.isOnline
+import com.google.vitaly.model.data.userdata.Result
 import com.google.vitaly.utils.ui.viewById
 import geekbrains.ru.translator.R
 import geekbrains.ru.translator.di.injectDependencies
+import geekbrains.ru.translator.utils.convertMeaningsToSingleString
 import geekbrains.ru.translator.view.main.adapter.MainAdapter
 import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
-import geekbrains.ru.translator.utils.convertMeaningsToString
 import geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity
-import kotlinx.android.synthetic.main.activity_main.*
+
 import org.koin.android.scope.currentScope
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
@@ -40,6 +40,7 @@ private const val HISTORY_ACTIVITY_PATH = "com.google.vitaly.historyscreen.view.
 private const val HISTORY_ACTIVITY_FEATURE_NAME = "historyScreen"
 private const val REQUEST_CODE = 98
 class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListener {
+    override val layoutRes = R.layout.activity_main
     override lateinit var model: MainViewModel
     private lateinit var splitInstallManager: SplitInstallManager
     private lateinit var appUpdateManager: AppUpdateManager
@@ -56,12 +57,12 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
         }
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
-            override fun onItemClick(data: SearchResult) {
+            override fun onItemClick(data: Result) {
                 startActivity(
                     DescriptionActivity.getIntent(
                         this@MainActivity,
                         data.text!!,
-                        convertMeaningsToString(
+                        convertMeaningsToSingleString(
                             data.meanings!!
                         ),
                         data.meanings!![0].imageUrl
@@ -72,7 +73,6 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
     private val onSearchClickListener: SearchDialogFragment.OnSearchClickListener =
         object : SearchDialogFragment.OnSearchClickListener {
             override fun onClick(searchWord: String) {
-                isNetworkAvailable = isOnline(applicationContext)
                 if (isNetworkAvailable) {
                     model.getData(searchWord, isNetworkAvailable)
                 } else {
@@ -92,7 +92,6 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         iniViewModel()
         initViews()
         itemTouchHelper = getItemTochHelper()
@@ -144,10 +143,10 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
                 ItemTouchHelper(this)
             }
             .apply {
-                attachToRecyclerView(main_activity_recyclerview)
+                attachToRecyclerView(mainActivityRecyclerView)
             }
 
-    override fun setDataToAdapter(data: List<SearchResult>) {
+    override fun setDataToAdapter(data: List<Result>) {
         adapter.setData(data)
     }
 
@@ -213,7 +212,7 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
     }
 
     private fun iniViewModel() {
-        check(main_activity_recyclerview.adapter == null) { "The ViewModel should be initialised first" }
+        check(mainActivityRecyclerView.adapter == null) { "The ViewModel should be initialised first" }
         injectDependencies()
         val viewModel: MainViewModel by currentScope.inject()
         model = viewModel
