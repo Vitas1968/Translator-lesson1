@@ -1,7 +1,7 @@
 package com.google.vitaly.repository
 
+import com.google.vitaly.model.data.dto.SearchResultDto
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.google.vitaly.model.data.SearchResult
 import com.google.vitaly.repository.api.ApiService
 import com.google.vitaly.repository.api.BaseInterceptor
 import okhttp3.Interceptor
@@ -11,9 +11,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitImplementation :
-    DataSource<List<SearchResult>> {
+    DataSource<List<SearchResultDto>> {
 
-    override suspend fun getData(word: String): List<SearchResult> {
+    override suspend fun getData(word: String): List<SearchResultDto> {
         return getService(BaseInterceptor.interceptor).searchAsync(word).await()
     }
 
