@@ -1,8 +1,8 @@
 package com.google.vitaly.historyscreen
 
 import com.google.vitaly.model.data.DataModel
-import com.google.vitaly.model.data.Meanings
-import com.google.vitaly.model.data.SearchResult
+import com.google.vitaly.model.data.userdata.Meaning
+import com.google.vitaly.model.data.userdata.Result
 
 
 fun parseLocalSearchResults(data: DataModel): DataModel {
@@ -12,8 +12,8 @@ fun parseLocalSearchResults(data: DataModel): DataModel {
 private fun mapResult(
     data: DataModel,
     isOnline: Boolean
-): List<SearchResult> {
-    val newSearchResults = arrayListOf<SearchResult>()
+): List<Result> {
+    val newSearchResults = arrayListOf<Result>()
     when (data) {
         is DataModel.Success -> {
             getSuccessResultData(data, isOnline, newSearchResults)
@@ -25,9 +25,9 @@ private fun mapResult(
 private fun getSuccessResultData(
     data: DataModel.Success,
     isOnline: Boolean,
-    newSearchResults: ArrayList<SearchResult>
+    newSearchResults: ArrayList<Result>
 ) {
-    val searchResults: List<SearchResult> = data.data as List<SearchResult>
+    val searchResults: List<Result> = data.data as List<Result>
     if (searchResults.isNotEmpty()) {
         if (isOnline) {
             for (searchResult in searchResults) {
@@ -35,22 +35,32 @@ private fun getSuccessResultData(
             }
         } else {
             for (searchResult in searchResults) {
-                newSearchResults.add(SearchResult(searchResult.text, arrayListOf()))
+                newSearchResults.add(Result(searchResult.text, arrayListOf()))
             }
         }
     }
 }
 
-private fun parseOnlineResult(searchResult: SearchResult, newSearchResults: ArrayList<SearchResult>) {
-    if (!searchResult.text.isNullOrBlank() && !searchResult.meanings.isNullOrEmpty()) {
-        val newMeanings = arrayListOf<Meanings>()
-        for (meaning in searchResult.meanings!!) {
-            if (meaning.translation != null && !meaning.translation!!.translation.isNullOrBlank()) {
-                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl,meaning.previewUrl))
+private fun parseOnlineResult(searchResult: Result, newSearchResults: ArrayList<Result>) {
+    if (searchResult.text.isNotBlank() && searchResult.meanings.isNotEmpty()) {
+        val newMeanings = arrayListOf<Meaning>()
+        for (meaning in searchResult.meanings) {
+            if (meaning.translatedMeaning.translatedMeaning.isBlank()) {
+                newMeanings.add(
+                    Meaning(
+                        meaning.translatedMeaning,
+                        meaning.imageUrl
+                    )
+                )
             }
         }
         if (newMeanings.isNotEmpty()) {
-            newSearchResults.add(SearchResult(searchResult.text, newMeanings))
+            newSearchResults.add(
+                Result(
+                    searchResult.text,
+                    newMeanings
+                )
+            )
         }
     }
 }
