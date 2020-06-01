@@ -3,12 +3,14 @@ package com.google.vitaly.core
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.anikin.aleksandr.simplevocabulary.viewmodel.Interactor
 import com.google.vitaly.core.viewmodel.BaseViewModel
 import com.google.vitaly.model.data.DataModel
-import com.google.vitaly.model.data.SearchResult
-import com.google.vitaly.utils.network.isOnline
+import com.google.vitaly.utils.network.OnlineLiveData
+import com.google.vitaly.model.data.userdata.Result
 import geekbrains.ru.translator.utils.ui.AlertDialogFragment
 import kotlinx.android.synthetic.main.loading_layout.*
 
@@ -17,17 +19,20 @@ private const val DIALOG_FRAGMENT_TAG = "74a54328-5d62-46bf-ab6b-cbf5d8c79522"
 
 abstract class BaseActivity<T : DataModel, I : Interactor<T>> : AppCompatActivity() {
 
+
     abstract val model: BaseViewModel<T>
-    protected var isNetworkAvailable: Boolean = false
+    protected abstract val layoutRes: Int
+    protected var isNetworkAvailable: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-        isNetworkAvailable = isOnline(applicationContext)
+        setContentView(layoutRes)
+        subscribeToNetworkChange()
+
     }
 
     override fun onResume() {
         super.onResume()
-        isNetworkAvailable = isOnline(applicationContext)
         if (!isNetworkAvailable && isDialogNull()) {
             showNoInternetConnectionDialog()
         }
@@ -65,6 +70,20 @@ abstract class BaseActivity<T : DataModel, I : Interactor<T>> : AppCompatActivit
             }
         }
     }
+    private fun subscribeToNetworkChange() {
+        OnlineLiveData(this).observe(
+            this@BaseActivity,
+            Observer<Boolean> {
+                isNetworkAvailable = it
+                if (!isNetworkAvailable) {
+                    Toast.makeText(
+                        this@BaseActivity,
+                        R.string.dialog_message_device_is_offline,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+    }
 
     protected fun showNoInternetConnectionDialog() {
         showAlertDialog(
@@ -91,6 +110,6 @@ abstract class BaseActivity<T : DataModel, I : Interactor<T>> : AppCompatActivit
         return supportFragmentManager.findFragmentByTag(DIALOG_FRAGMENT_TAG) == null
     }
 
-    abstract fun setDataToAdapter(data: List<SearchResult>)
+    abstract fun setDataToAdapter(data: List<Result>)
 }
 
