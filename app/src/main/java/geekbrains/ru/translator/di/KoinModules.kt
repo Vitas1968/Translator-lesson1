@@ -1,7 +1,7 @@
 package geekbrains.ru.translator.di
 
 import androidx.room.Room
-import com.google.vitaly.model.data.SearchResult
+import com.google.vitaly.model.data.dto.SearchResultDto
 import com.google.vitaly.repository.RetrofitImplementation
 import com.google.vitaly.repository.RoomDataBaseImplementation
 import com.google.vitaly.repository.Repository
@@ -26,8 +26,8 @@ private val loadModules by lazy {
 val application = module {
     single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
     single { get<HistoryDataBase>().historyDao() }
-    single<Repository<List<SearchResult>>> { RepositoryImplementation(RetrofitImplementation()) }
-    single<RepositoryLocal<List<SearchResult>>> { RepositoryImplementationLocal(RoomDataBaseImplementation(get())) }
+    single<Repository<List<SearchResultDto>>> { RepositoryImplementation(RetrofitImplementation()) }
+    single<RepositoryLocal<List<SearchResultDto>>> { RepositoryImplementationLocal(RoomDataBaseImplementation(get())) }
 }
 
 val mainScreen = module {
