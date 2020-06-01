@@ -6,19 +6,18 @@ import com.google.vitaly.core.BaseActivity
 import com.google.vitaly.historyscreen.R
 import com.google.vitaly.historyscreen.injectDependencies
 import com.google.vitaly.model.data.DataModel
-import com.google.vitaly.model.data.SearchResult
+import com.google.vitaly.model.data.userdata.Result
 import kotlinx.android.synthetic.main.activity_history.*
 import org.koin.android.scope.currentScope
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class HistoryActivity : BaseActivity<DataModel, HistoryInteractor>() {
 
+    override val layoutRes = R.layout.activity_history
     override lateinit var model: HistoryViewModel
     private val adapter: HistoryAdapter by lazy { HistoryAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_history)
         iniViewModel()
         initViews()
     }
@@ -28,7 +27,7 @@ class HistoryActivity : BaseActivity<DataModel, HistoryInteractor>() {
         model.getData("", false)
     }
 
-    override fun setDataToAdapter(data: List<SearchResult>) {
+    override fun setDataToAdapter(data: List<Result>) {
         adapter.setData(data)
     }
 
