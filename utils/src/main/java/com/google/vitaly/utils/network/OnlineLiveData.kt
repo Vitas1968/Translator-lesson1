@@ -1,4 +1,4 @@
-package geekbrains.ru.utils.network
+package com.google.vitaly.utils.network
 
 import android.content.Context
 import android.net.ConnectivityManager
