@@ -1,14 +1,14 @@
 package com.google.vitaly.repository
 
 import com.google.vitaly.model.data.DataModel
-import com.google.vitaly.model.data.SearchResult
+import com.google.vitaly.model.data.dto.SearchResultDto
 import com.google.vitaly.repository.room.HistoryDao
 
 
 class RoomDataBaseImplementation(private val historyDao: HistoryDao) :
-    DataSourceLocal<List<SearchResult>> {
+    DataSourceLocal<List<SearchResultDto>> {
 
-    override suspend fun getData(word: String): List<SearchResult> {
+    override suspend fun getData(word: String): List<SearchResultDto> {
         val listHistoryEntity=historyDao.all()
         return mapHistoryEntityToSearchResult(
             listHistoryEntity
