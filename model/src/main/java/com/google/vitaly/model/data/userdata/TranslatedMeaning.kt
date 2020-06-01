@@ -1,3 +1,3 @@
-package geekbrains.ru.model.data.userdata
+package com.google.vitaly.model.data.userdata
 
 data class TranslatedMeaning(val translatedMeaning: String = "")
