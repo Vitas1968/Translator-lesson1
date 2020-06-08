@@ -14,13 +14,16 @@ import geekbrains.ru.translator.view.main.image_loader.GlideImageLoader
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.description_textview_recycler_item
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.header_textview_recycler_item
 import kotlinx.android.synthetic.main.item_card_view_image.view.*
+import java.lang.ref.WeakReference
 
-class MainAdapter(private var onListItemClickListener: OnListItemClickListener, private val mainActivity: MainActivity) :
+class MainAdapter(private var onListItemClickListener: OnListItemClickListener, private var activityWeakReference: WeakReference<MainActivity>? ) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>(),ItemTouchHelperAdapter {
+
     private var data=mutableListOf<Result>()
     private val glideImageLoader=GlideImageLoader()
 
     fun setData(dataListSearchResult: List<Result>) {
+        data.clear()
         data.addAll(dataListSearchResult)
         notifyDataSetChanged()
     }
@@ -68,7 +71,8 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
                         text = data.text
                         setOnTouchListener { _, event ->
                             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-                                mainActivity.onStartDrag(this@RecyclerItemViewHolder)
+                                val mainActivity=activityWeakReference?.let { it.get() }
+                                mainActivity?.onStartDrag(this@RecyclerItemViewHolder)
                             }
                             false
                         }
