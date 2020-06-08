@@ -14,7 +14,8 @@ fun mapSearchResultToResult(searchResults: List<SearchResultDto>): List<Result> 
             meanings = it.map { meaningsDto ->
                 Meaning(
                     TranslatedMeaning(meaningsDto?.translation?.translation ?: ""),
-                    meaningsDto?.imageUrl ?: ""
+                    meaningsDto?.imageUrl ?: "",
+                    meaningsDto?.previewUrl ?: ""
                 )
             }
         }
