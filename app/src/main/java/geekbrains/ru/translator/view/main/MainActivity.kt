@@ -1,5 +1,6 @@
 package geekbrains.ru.translator.view.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -7,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +36,7 @@ import geekbrains.ru.translator.view.main.adapter.OnStartDragListener
 import geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity
 
 import org.koin.android.scope.currentScope
+import java.lang.ref.WeakReference
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 private const val HISTORY_ACTIVITY_PATH = "com.google.vitaly.historyscreen.view.history.HistoryActivity"
@@ -48,7 +51,9 @@ class MainActivity : BaseActivity<DataModel, MainInteractor>(),OnStartDragListen
     private val mainActivityRecyclerView by viewById<RecyclerView>(R.id.main_activity_recyclerview)
     private val searchFAB by viewById<FloatingActionButton>(R.id.search_fab)
 
-    private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener,this@MainActivity) }
+    private var activityWeakReference: WeakReference<MainActivity>?=WeakReference(this)
+    private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener,activityWeakReference) }
+
     private val fabClickListener: View.OnClickListener =
         View.OnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
